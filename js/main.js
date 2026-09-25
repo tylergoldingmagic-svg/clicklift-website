@@ -32,7 +32,7 @@
         toggle.focus();
       }
     });
-    const desktop = window.matchMedia('(min-width: 761px)');
+    const desktop = window.matchMedia('(min-width: 821px)');
     const closeOnDesktop = (event) => { if (event.matches) setOpen(false); };
     if (desktop.addEventListener) desktop.addEventListener('change', closeOnDesktop);
   }
@@ -43,7 +43,7 @@
 
   function initStarfield(canvas) {
     const ctx = canvas.getContext('2d');
-    const COLORS = ['255,255,255', '255,255,255', '255,255,255', '206,222,255', '206,222,255', '255,226,176'];
+    const COLORS = ['255,255,255', '255,255,255', '255,255,255', '226,210,255', '226,210,255', '255,226,176'];
     const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
     let width = 0;
     let height = 0;
@@ -255,6 +255,15 @@
     });
   }
 
+  /* ---------- Service CTAs pre-select what the visitor needs ---------- */
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-need]');
+    if (!trigger) return;
+    const value = trigger.getAttribute('data-need');
+    const box = Array.from(document.querySelectorAll('input[name="needs"]')).find((input) => input.value === value);
+    if (box) box.checked = true;
+  });
+
   /* ---------- Contact form ---------- */
   const form = document.querySelector('[data-contact-form]');
   if (form) initForm(form);
@@ -315,7 +324,11 @@
         return;
       }
 
-      const data = Object.fromEntries(new FormData(form).entries());
+      const formData = new FormData(form);
+      const needs = formData.getAll('needs');
+      formData.delete('needs');
+      const data = Object.fromEntries(formData.entries());
+      if (needs.length) data.needs = needs.join(', ');
       if (data._honey) return; // bots fill hidden fields; people don't
 
       submit.disabled = true;
@@ -346,6 +359,7 @@
           `Name: ${data.first_name} ${data.last_name}`,
           `Email: ${data.email}`,
           `Phone: ${data.phone}`,
+          `Needs: ${data.needs || 'Not sure yet'}`,
           '',
           data.message || '',
         ].join('\n');

@@ -2,18 +2,20 @@
 
 The marketing site for **Click Lift**: *Whatever you freaking need.*
 
-A simple one-page static site (plain HTML, CSS and JavaScript, no build step) with a light space theme pulled from the Click Lift brand: deep navy, a glowing planet horizon with city lights, a twinkling starfield and the rocket logo.
+A one-page static site (plain HTML, CSS and JavaScript, no build step) with a light space theme in the Click Lift purple (Pantone 2685 C): a purple planet horizon with gold city lights, a twinkling starfield and the rocket logo.
+
+Page sections, top to bottom: hero with quick links, stats, "Why Click Lift" (old agency theater vs. the Click Lift reality), services (Grow, Create, Build, Handle it), about, the "Weird request? Perfect." band, FAQ, and the contact form.
 
 ## What's in here
 
 ```
-index.html            The whole site: hero, stats, services, about, contact, footer
+index.html            The whole site, top to bottom
 404.html              "Lost in space" page for broken links
 css/styles.css        All styling. Brand colours live at the top in :root
 js/main.js            Menu, starfield, scroll reveals, stat counters, contact form
 assets/
-  logo.svg            Full logo, white (logo-navy.svg for light backgrounds)
-  logo-mark.svg       Rocket mark, white (logo-mark-navy.svg for light backgrounds)
+  logo.svg            Full logo, white (logo-purple.svg for light backgrounds)
+  logo-mark.svg       Rocket mark, white (logo-mark-purple.svg for light backgrounds)
   favicon.svg         Browser tab icon
   apple-touch-icon.png  Home-screen icon for iPhone/iPad
   og-image.png        Preview image when the link is shared (1200x630)
@@ -25,19 +27,22 @@ favicon.ico           Fallback tab icon
 
 | Name | Hex | Used for |
 | --- | --- | --- |
-| Click Lift navy | `#11335b` | Logo, button text, icon tiles |
-| Deep space | `#040b1a` | Page background |
-| Atmosphere blue | `#6fa8ff` | Glows, focus rings |
-| City-light gold | `#f7b955` | Accent (the word "freaking", highlights) |
+| Click Lift purple (Pantone 2685 C) | `#330072` | Brand colour: buttons, the "Weird request" band, icons, favicon |
+| Purple steps | `#4a0fa0`, `#5b1fb8` | Gradients next to the brand purple |
+| Deep space | `#0b0418` | Page background |
+| Lilac glow | `#ad7bf4` | Planet atmosphere, glows, focus states |
+| City-light gold | `#f7b955` | Small accent (the word "freaking", checkmarks, highlights) |
 | White | `#ffffff` | Headings, primary buttons |
 
-Fonts are [Manrope](https://fonts.google.com/specimen/Manrope) for text and [Space Mono](https://fonts.google.com/specimen/Space+Mono) for small labels, loaded from Google Fonts.
+Fonts are [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) for text and [Space Mono](https://fonts.google.com/specimen/Space+Mono) for small labels, loaded from Google Fonts.
 
 ## Editing
 
 - **Text:** everything is in `index.html`, in the order it appears on the page.
 - **Stats:** each number has a `data-count` attribute (the animated value) plus the visible text. Change both, and the matching `sr-only` line for screen readers.
 - **Colours:** change the variables at the top of `css/styles.css`.
+- **FAQ:** each question is a `<details>` block in the FAQ section. Opening one closes the others.
+- **Service buttons:** "Help me grow", "Send the weird list" and the others jump to the form and tick the matching "What do you need?" option (set with `data-need`).
 
 ## Contact form
 
@@ -45,7 +50,7 @@ The form sends messages to **hello@clicklift.ca** through [FormSubmit](https://f
 
 1. After the site is live, submit the form once yourself.
 2. FormSubmit emails hello@clicklift.ca an **Activate Form** link. Click it.
-3. From then on, every submission is emailed to that inbox, with the sender's email as the reply-to address.
+3. From then on, every submission is emailed to that inbox, with the sender's email as the reply-to address and the ticked "What do you need?" options listed together.
 
 If a message can't be sent, visitors are offered a pre-filled email to hello@clicklift.ca instead, so nothing gets lost. To use a different address, change it in the form's `action` in `index.html` (and the `mailto:` links). FormSubmit's activation email also gives you a random alias you can use in the `action` instead of the real address if you'd rather keep it out of the page source.
 
