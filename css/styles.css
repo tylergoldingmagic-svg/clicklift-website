@@ -1057,6 +1057,7 @@ p {
 
 /* 04 Orbit: the About animation, now keeping your business company */
 .or-spin { animation: orbit 10s linear infinite; }
+@keyframes orbit { to { transform: rotate(360deg); } }
 .or-you {
   font-size: 8px;
   letter-spacing: 0.18em;
@@ -1296,6 +1297,8 @@ p {
 
 /* ---------- About ---------- */
 
+.about { overflow-x: clip; } /* the badge rocket may poke past the edge on small phones; never let it widen the page */
+
 .about-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
@@ -1303,83 +1306,139 @@ p {
   align-items: center;
 }
 
-/* Tyler's photo in an arched window, with a dashed "orbit" outline and a mission patch */
+/* Tyler's crew badge: his photo on top, the logo on a purple band, the logo rocket parked off the corner.
+   js/main.js tilts it by setting --rx / --ry (degrees), --gx / --gy (-1 to 1: where the light sits),
+   --glare (0 to 1) and --lift (0 to 1: the pointer is on the card). */
 .founder {
-  width: min(100%, 440px);
+  width: min(100% - 48px, 400px); /* leaves room for the rocket beside the text */
   margin: 0 auto;
 }
-.founder-frame { position: relative; }
-.founder-frame::before {
+.badge-float { animation: badge-float 8s ease-in-out infinite; } /* the same zero-g drift as the client cards */
+@keyframes badge-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -8px; }
+}
+.badge {
+  position: relative;
+  transform:
+    perspective(1100px)
+    rotateX(calc(var(--rx, 0) * 1deg))
+    rotateY(calc(var(--ry, 0) * 1deg))
+    translateZ(calc(var(--lift, 0) * 16px));
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.badge-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 26px;
+  background: var(--brand);
+  box-shadow:
+    0 0 0 1px rgba(220, 196, 255, 0.34),
+    calc(var(--ry, 0) * -1.5px) calc(36px + var(--rx, 0) * 1.5px) 70px -28px rgba(4, 1, 10, 0.95),
+    0 0 90px -16px rgba(140, 80, 240, 0.55);
+}
+.badge-card::after { /* a fine inner edge, like a laminated card */
   content: "";
   position: absolute;
-  inset: -14px;
-  border: 1px dashed rgba(204, 181, 237, 0.3);
-  border-radius: 50% 50% 38px 38px / 38% 38% 38px 38px;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
   pointer-events: none;
 }
-.founder-photo {
-  position: relative;
-  overflow: hidden;
+.badge-photo {
   aspect-ratio: 4 / 5;
-  border-radius: 50% 50% 26px 26px / 40% 40% 26px 26px;
   background: var(--space-900);
-  box-shadow:
-    0 0 0 1px rgba(220, 196, 255, 0.4),
-    0 40px 90px -40px rgba(140, 80, 240, 0.9),
-    0 0 80px -20px rgba(140, 80, 240, 0.45);
 }
-.founder-photo img {
+.badge-photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.founder-photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, transparent 62%, rgba(11, 4, 24, 0.3) 100%);
-  pointer-events: none;
+.badge-band {
+  position: relative;
+  padding: 28px 19% 30px;
+  background:
+    radial-gradient(70% 130% at 50% 0%, rgba(173, 123, 244, 0.4), transparent 70%),
+    linear-gradient(180deg, #3f0b8c, var(--brand) 58%, #270059);
+  border-top: 1px solid rgba(247, 185, 85, 0.7);
 }
-/* Little gold satellites parked on the dashed outline */
-.founder-sat {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--gold-soft);
-  box-shadow: 0 0 10px 2px rgba(247, 185, 85, 0.55);
-}
-.founder-sat--a { top: 19.5%; left: 1.5%; }
-.founder-sat--b { top: 54%; right: -16.5px; }
-.founder-patch {
-  position: absolute;
-  right: -26px;
-  bottom: 13%;
-  width: 116px;
-  height: 116px;
-  filter: drop-shadow(0 14px 24px rgba(7, 2, 15, 0.6));
-}
-.patch-spin {
-  transform-origin: 60px 60px;
-  animation: orbit 30s linear infinite;
-}
-.patch-text {
-  font-family: var(--font-mono);
-  font-size: 8.4px;
-  font-weight: 700;
+.badge-logo {
+  width: 100%;
+  height: auto;
   fill: #fff;
 }
-@keyframes orbit { to { transform: rotate(360deg); } }
-
-.founder-caption {
-  margin-top: 30px;
-  text-align: center;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text-dim);
+/* The light: a soft hotspot that follows the pointer, and a glint that sweeps across as the card turns */
+.badge-sheen,
+.badge-glint {
+  position: absolute;
+  pointer-events: none;
 }
+.badge-sheen {
+  inset: 0;
+  background: radial-gradient(75% 55% at calc(50% + var(--gx, 0) * 50%) calc(40% + var(--gy, 0) * 45%), rgba(255, 255, 255, 0.5), transparent 70%);
+  mix-blend-mode: soft-light;
+  opacity: calc(0.3 + var(--glare, 0) * 0.3 + var(--lift, 0) * 0.35);
+}
+.badge-glint {
+  inset: -20%;
+  background: linear-gradient(115deg, transparent 43%, rgba(255, 255, 255, 0.14) 48%, rgba(255, 243, 220, 0.26) 50%, rgba(214, 190, 255, 0.14) 52%, transparent 57%);
+  transform: translateX(calc(var(--gx, 0) * 38%));
+  mix-blend-mode: screen;
+  opacity: calc(0.3 + var(--glare, 0) * 0.5 + var(--lift, 0) * 0.2);
+}
+.js .founder.is-visible .badge-glint { animation: badge-glint-in 1.5s 0.9s ease-in-out both; }
+@keyframes badge-glint-in {
+  from { translate: -95% 0; }
+  to { translate: 0 0; }
+}
+
+/* The rocket sits 70px in front of the card, so it shifts more than the card when it tilts */
+.badge-rocket {
+  position: absolute;
+  top: -62px;
+  right: -50px;
+  width: 64px;
+  transform: translateZ(70px);
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+.badge-rocket-fly { transform-style: preserve-3d; }
+.badge-rocket-bob { animation: badge-rocket-bob 4.6s ease-in-out infinite; }
+@keyframes badge-rocket-bob {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-3px, -7px) rotate(-3deg); }
+}
+.badge-rocket svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  transform: rotate(45deg); /* pointing up and right, like the logo */
+  filter: drop-shadow(0 0 10px rgba(173, 123, 244, 0.8)) drop-shadow(0 12px 16px rgba(7, 2, 15, 0.55));
+}
+.badge-rocket .br-boost { /* idles low; fires up when the pointer is on the card */
+  opacity: calc(0.6 + var(--lift, 0) * 0.4);
+  transform: scale(calc(0.72 + var(--lift, 0) * 0.4));
+  transform-origin: 0 20px;
+}
+/* When the section scrolls in, the rocket launches from behind the card and parks on the corner */
+.js .founder .badge-rocket-fly { opacity: 0; }
+.js .founder.is-visible .badge-rocket-fly { animation: badge-rocket-in 1.8s 0.4s var(--ease) both; }
+.js .founder.is-visible .br-boost { animation: badge-boost 2.4s 0.4s ease-out backwards; }
+@keyframes badge-rocket-in { /* behind the card, out past its edge, then up and forward onto the corner */
+  0% { opacity: 0; transform: translate3d(-150px, 330px, -200px); animation-timing-function: cubic-bezier(0.45, 0, 0.8, 0.5); }
+  10% { opacity: 1; }
+  45% { transform: translate3d(58px, 170px, -110px); animation-timing-function: cubic-bezier(0.25, 0.6, 0.3, 1); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes badge-boost {
+  0%, 55% { opacity: 1; transform: scale(1.25); }
+  100% { opacity: 0.6; transform: scale(0.72); }
+}
+.founder.is-paused .badge-float,
+.founder.is-paused .badge-rocket-bob,
+.founder.is-paused .flick { animation-play-state: paused; }
 
 .about-copy .lead {
   margin: 26px 0 22px;
@@ -1421,8 +1480,8 @@ p {
 
 @media (max-width: 900px) {
   .about-grid { grid-template-columns: 1fr; }
-  .founder { width: min(100% - 28px, 340px); }
-  .founder-patch { right: -18px; width: 96px; height: 96px; }
+  .founder { width: min(100% - 72px, 320px); }
+  .badge-rocket { top: -46px; right: -30px; width: 48px; }
 }
 
 /* ---------- Weird request band ---------- */
@@ -1903,7 +1962,14 @@ p {
   .ac-b:nth-of-type(n) { opacity: 0.9; }
   .or-spin { transform: rotate(35deg); }
   .tow { left: 50%; transform: translateX(-50%); }
-  .patch-spin { animation: none; }
+  /* The badge holds still: no drift, no launch, no glint */
+  .badge-float,
+  .badge-rocket-bob,
+  .badge-rocket .flick,
+  .js .founder.is-visible .br-boost { animation: none; }
+  .js .founder .badge-rocket-fly,
+  .js .founder.is-visible .badge-rocket-fly { opacity: 1; animation: none; }
+  .badge-glint { display: none; }
   .client { animation: none; }
   .clients-rocket,
   .clients-trail { display: none; }

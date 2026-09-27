@@ -434,27 +434,33 @@
     <!-- About -->
     <section class="section about" id="about" aria-labelledby="about-title">
       <div class="container about-grid">
-        <figure class="founder reveal">
-          <div class="founder-frame">
-            <div class="founder-photo">
-              <picture>
-                <source type="image/webp" srcset="assets/tyler-golding-600.webp 600w, assets/tyler-golding-900.webp 900w" sizes="(max-width: 900px) 340px, 440px">
-                <img src="assets/tyler-golding-900.jpg" srcset="assets/tyler-golding-600.jpg 600w, assets/tyler-golding-900.jpg 900w" sizes="(max-width: 900px) 340px, 440px" width="900" height="1125" alt="Tyler Golding, founder of Click Lift, smiling outdoors in a blue t-shirt" loading="lazy" decoding="async">
-              </picture>
+        <!-- Tyler's crew badge. js/main.js tilts it toward the pointer (or with the scroll on touch screens). -->
+        <figure class="founder reveal" data-badge>
+          <div class="badge-float">
+            <div class="badge">
+              <div class="badge-card">
+                <div class="badge-photo">
+                  <picture>
+                    <source type="image/webp" srcset="assets/tyler-golding-600.webp 600w, assets/tyler-golding-900.webp 900w" sizes="(max-width: 900px) 300px, 400px">
+                    <img src="assets/tyler-golding-900.jpg" srcset="assets/tyler-golding-600.jpg 600w, assets/tyler-golding-900.jpg 900w" sizes="(max-width: 900px) 300px, 400px" width="900" height="1125" alt="Tyler Golding, founder of Click Lift, smiling outdoors in a blue t-shirt" loading="lazy" decoding="async">
+                  </picture>
+                </div>
+                <div class="badge-band">
+                  <svg class="badge-logo" viewBox="0 0 324.17 56.62" aria-hidden="true" focusable="false"><use href="#logo-full"/></svg>
+                </div>
+                <span class="badge-sheen" aria-hidden="true"></span>
+                <span class="badge-glint" aria-hidden="true"></span>
+              </div>
+              <!-- The logo rocket, parked just off the corner on its own depth layer -->
+              <div class="badge-rocket" aria-hidden="true">
+                <div class="badge-rocket-fly">
+                  <div class="badge-rocket-bob">
+                    <svg viewBox="-36 -66 72 152" focusable="false"><g class="br-boost"><g transform="translate(0 20)"><g class="flick"><use href="#rk-boost" transform="translate(0 -20)"/></g></g></g><use href="#rk-flame" fill="#ffd58a"/><use href="#rk" fill="#fff"/></svg>
+                  </div>
+                </div>
+              </div>
             </div>
-            <span class="founder-sat founder-sat--a" aria-hidden="true"></span>
-            <span class="founder-sat founder-sat--b" aria-hidden="true"></span>
-            <!-- Mission patch: the text ring turns slowly -->
-            <svg class="founder-patch" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
-              <defs><path id="patch-ring" d="M60 60m-43 0a43 43 0 1 1 86 0a43 43 0 1 1-86 0"/></defs>
-              <circle cx="60" cy="60" r="58" fill="#170734" stroke="#f7b955" stroke-width="2"/>
-              <circle cx="60" cy="60" r="53" fill="none" stroke="#ccb5ed" stroke-opacity=".55" stroke-dasharray="2 3"/>
-              <circle cx="60" cy="60" r="31" fill="url(#g-core)" stroke="#dcc4ff" stroke-opacity=".45"/>
-              <g class="patch-spin"><text class="patch-text"><textPath href="#patch-ring" textLength="268" lengthAdjust="spacing">WHATEVER YOU FREAKING NEED &#183; CLICK LIFT &#183; </textPath></text></g>
-              <use href="#rk" transform="translate(60 61) rotate(45) scale(.42)" fill="#fff"/>
-            </svg>
           </div>
-          <figcaption class="founder-caption">The guy you'll actually talk to</figcaption>
         </figure>
 
         <div class="about-copy reveal" style="--delay: .1s">

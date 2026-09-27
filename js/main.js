@@ -1,5 +1,6 @@
 /* Click Lift site script: header, mobile menu, starfield, typed service line,
-   scroll reveals, stat counters, service animations, the clients rocket and the contact form.
+   scroll reveals, stat counters, service animations, the clients rocket, the About badge tilt
+   and the contact form.
    No dependencies. */
 (() => {
   'use strict';
@@ -608,6 +609,121 @@
         if (running) sizeCanvas();
       }, 150);
     });
+  }
+
+  /* ---------- About: Tyler's crew badge turns to face the pointer (and leans with the scroll on touch screens) ---------- */
+  const badgeFigure = document.querySelector('[data-badge]');
+  if (badgeFigure) initBadge(badgeFigure);
+
+  function initBadge(figure) {
+    const badge = figure.querySelector('.badge');
+    if (!badge) return;
+
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const MAX_X = 7; // degrees the card leans top to bottom
+    const MAX_Y = 10; // degrees it turns left to right
+    const now = { rx: 0, ry: 0, gx: 0, gy: 0, lift: 0 };
+    const goal = { rx: 0, ry: 0, gx: 0, gy: 0, lift: 0 };
+    let pointer = null; // last mouse position, while the mouse is in the window
+    let inView = false;
+    let rafId = 0;
+    let lastTime = 0;
+
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+    // Where the card should face.
+    function aim() {
+      const rect = figure.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      if (pointer && finePointer.matches) {
+        // Face the mouse, wherever it is on the page; lift a little when it's on the card.
+        const nx = clamp((pointer.x - cx) / (rect.width * 0.9), -1, 1);
+        const ny = clamp((pointer.y - cy) / (rect.height * 0.75), -1, 1);
+        goal.rx = -ny * MAX_X;
+        goal.ry = nx * MAX_Y;
+        goal.gx = nx;
+        goal.gy = ny;
+        goal.lift = pointer.x >= rect.left && pointer.x <= rect.right && pointer.y >= rect.top && pointer.y <= rect.bottom ? 1 : 0;
+      } else {
+        // No mouse: lean gently as the card travels up the screen.
+        const view = window.innerHeight || 1;
+        const p = clamp((cy - view / 2) / (view * 0.6), -1, 1);
+        goal.rx = p * 6;
+        goal.ry = -p * 4;
+        goal.gx = -p * 0.8;
+        goal.gy = p * 0.6;
+        goal.lift = 0;
+      }
+    }
+
+    function paint() {
+      badge.style.setProperty('--rx', now.rx.toFixed(3));
+      badge.style.setProperty('--ry', now.ry.toFixed(3));
+      badge.style.setProperty('--gx', now.gx.toFixed(3));
+      badge.style.setProperty('--gy', now.gy.toFixed(3));
+      badge.style.setProperty('--glare', Math.min(1, Math.hypot(now.gx, now.gy)).toFixed(3));
+      badge.style.setProperty('--lift', now.lift.toFixed(3));
+    }
+
+    function frame(time) {
+      const dt = lastTime ? Math.min(0.05, (time - lastTime) / 1000) : 1 / 60;
+      lastTime = time;
+      const ease = 1 - Math.exp(-dt * 7); // smooth follow, frame-rate independent
+      let settled = true;
+      Object.keys(goal).forEach((key) => {
+        const diff = goal[key] - now[key];
+        if (Math.abs(diff) > 0.002) settled = false;
+        now[key] += diff * ease;
+      });
+      paint();
+      if (settled) {
+        rafId = 0;
+        lastTime = 0;
+      } else {
+        rafId = requestAnimationFrame(frame);
+      }
+    }
+
+    function kick() {
+      if (!inView || reduceMotion.matches) return;
+      aim();
+      if (!rafId) rafId = requestAnimationFrame(frame);
+    }
+
+    function rest() {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+      lastTime = 0;
+      Object.keys(goal).forEach((key) => { goal[key] = 0; now[key] = 0; });
+      paint();
+    }
+
+    window.addEventListener('pointermove', (event) => {
+      if (event.pointerType === 'touch') return;
+      pointer = { x: event.clientX, y: event.clientY };
+      kick();
+    }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', () => {
+      pointer = null;
+      kick();
+    });
+    window.addEventListener('scroll', kick, { passive: true });
+    window.addEventListener('resize', kick);
+    if (finePointer.addEventListener) finePointer.addEventListener('change', kick);
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        inView = entries[0].isIntersecting;
+        figure.classList.toggle('is-paused', !inView);
+        kick();
+      }).observe(figure);
+    } else {
+      inView = true;
+    }
+    if (reduceMotion.addEventListener) {
+      reduceMotion.addEventListener('change', () => (reduceMotion.matches ? rest() : kick()));
+    }
   }
 
   /* ---------- Service CTAs pre-select what the visitor needs ---------- */
