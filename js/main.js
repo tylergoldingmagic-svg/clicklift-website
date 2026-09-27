@@ -1,5 +1,5 @@
-/* Click Lift site script: header, mobile menu, starfield, scroll reveals,
-   stat counters and the contact form. No dependencies. */
+/* Click Lift site script: header, mobile menu, starfield, typed service line,
+   scroll reveals, stat counters and the contact form. No dependencies. */
 (() => {
   'use strict';
 
@@ -204,6 +204,104 @@
 
     resize();
     start();
+  }
+
+  /* ---------- Hero typewriter: types out one service at a time ---------- */
+  const typer = document.querySelector('[data-typer]');
+  if (typer) initTyper(typer);
+
+  function initTyper(el) {
+    const output = el.querySelector('[data-typer-text]');
+    const words = (el.dataset.words || '').split('|').map((word) => word.trim()).filter(Boolean);
+    if (!output || !words.length) return;
+
+    const TYPE_MIN = 45; // ms per letter, randomised so it types like a person
+    const TYPE_MAX = 120;
+    const DELETE = 32; // ms per letter when backspacing
+    const HOLD = 1900; // how long a finished service stays up
+    const GAP = 420; // empty pause before the next one
+    const STILL = 2800; // reduced motion: whole services swap in, no typing
+
+    let word = 0;
+    let letters = 0;
+    let deleting = false;
+    let timer = 0;
+    let paused = false;
+    let inView = true;
+
+    const typing = (on) => el.classList.toggle('is-typing', on);
+    const later = (ms) => {
+      clearTimeout(timer);
+      timer = setTimeout(step, ms);
+    };
+
+    function step() {
+      if (reduceMotion.matches) {
+        if (output.textContent === words[word]) word = (word + 1) % words.length;
+        output.textContent = words[word];
+        letters = words[word].length;
+        deleting = true; // if motion is switched back on, this one gets backspaced next
+        typing(false);
+        later(STILL);
+        return;
+      }
+
+      const text = words[word];
+      if (!deleting) {
+        letters += 1;
+        output.textContent = text.slice(0, letters);
+        if (letters < text.length) {
+          typing(true);
+          later(TYPE_MIN + Math.random() * (TYPE_MAX - TYPE_MIN));
+        } else {
+          typing(false); // the caret blinks while the finished service sits there
+          deleting = true;
+          later(HOLD);
+        }
+      } else {
+        letters -= 1;
+        output.textContent = text.slice(0, letters);
+        if (letters > 0) {
+          typing(true);
+          later(DELETE);
+        } else {
+          typing(false);
+          deleting = false;
+          word = (word + 1) % words.length;
+          later(GAP);
+        }
+      }
+    }
+
+    // Only type while the hero is on screen and the tab is visible.
+    const pause = () => {
+      paused = true;
+      clearTimeout(timer);
+    };
+    const resume = () => {
+      if (!paused || !inView || document.hidden) return;
+      paused = false;
+      later(300);
+    };
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        inView = entries[0].isIntersecting;
+        if (inView) resume(); else pause();
+      }).observe(el);
+    }
+    document.addEventListener('visibilitychange', () => (document.hidden ? pause() : resume()));
+
+    if (reduceMotion.matches) {
+      output.textContent = words[0];
+      letters = words[0].length;
+      deleting = true;
+      later(STILL);
+    } else {
+      output.textContent = '';
+      later(700); // let the hero fade in first
+    }
+    if (document.hidden) pause(); // opened in a background tab: start when it's shown
+    el.classList.add('is-ready');
   }
 
   /* ---------- Scroll reveals ---------- */

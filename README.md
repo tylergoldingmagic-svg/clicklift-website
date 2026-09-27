@@ -4,7 +4,7 @@ The marketing site for **Click Lift**: *Whatever you freaking need.*
 
 A one-page static site (plain HTML, CSS and JavaScript, no build step) with a light space theme in the Click Lift purple (Pantone 2685 C): a purple planet horizon with gold city lights, a twinkling starfield and the rocket logo.
 
-Page sections, top to bottom: hero with quick links, stats, "Why Click Lift" (old agency theater vs. the Click Lift reality), services (Grow, Create, Build, Handle it), about, the "Weird request? Perfect." band, FAQ, and the contact form.
+Page sections, top to bottom: hero (with a line that types out one service at a time), stats, "Why Click Lift" (Big Agencies vs. Click Lift), services (Launch, Lift, Accelerate, Orbit, and Whatever you freaking need), about, the "Weird request? Perfect." band, FAQ, and the contact form.
 
 ## What's in here
 
@@ -12,7 +12,7 @@ Page sections, top to bottom: hero with quick links, stats, "Why Click Lift" (ol
 index.html            The whole site, top to bottom
 404.html              "Lost in space" page for broken links
 css/styles.css        All styling. Brand colours live at the top in :root
-js/main.js            Menu, starfield, scroll reveals, stat counters, contact form
+js/main.js            Menu, starfield, typed service line, scroll reveals, stat counters, contact form
 assets/
   logo.svg            Full logo, white (logo-purple.svg for light backgrounds)
   logo-mark.svg       Rocket mark, white (logo-mark-purple.svg for light backgrounds)
@@ -39,10 +39,11 @@ Fonts are [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+San
 ## Editing
 
 - **Text:** everything is in `index.html`, in the order it appears on the page.
+- **Typed services (hero):** the list lives in the `data-words` attribute on the hero's typed line, separated by `|`. Update the `sr-only` sentence right next to it as well (that's what screen readers announce instead of the animation).
 - **Stats:** each number has a `data-count` attribute (the animated value) plus the visible text. Change both, and the matching `sr-only` line for screen readers.
 - **Colours:** change the variables at the top of `css/styles.css`.
 - **FAQ:** each question is a `<details>` block in the FAQ section. Opening one closes the others.
-- **Service buttons:** "Help me grow", "Send the weird list" and the others jump to the form and tick the matching "What do you need?" option (set with `data-need`).
+- **Service buttons:** "Let's launch", "Get me found", "Send the weird list" and the others jump to the form and tick the matching "What do you need?" option. A button's `data-need` must match that option's `value` exactly.
 
 ## Contact form
 
