@@ -264,6 +264,7 @@ p {
 
 .brand {
   display: inline-flex;
+  flex: none;
   color: #fff;
   text-decoration: none;
   border-radius: 6px;
@@ -290,6 +291,9 @@ p {
   transition: color 0.2s ease;
 }
 .nav-menu a:not(.btn):hover { color: #fff; }
+@media (min-width: 821px) and (max-width: 1060px) {
+  .nav-menu { gap: 20px; }
+}
 
 .nav-toggle {
   display: none;
@@ -688,11 +692,12 @@ p {
 }
 
 .service {
+  --pad: clamp(24px, 2.4vw, 30px);
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: clamp(24px, 2.4vw, 30px);
+  padding: var(--pad);
   overflow: hidden;
   transition: transform 0.4s var(--ease), border-color 0.4s ease, box-shadow 0.4s ease;
 }
@@ -703,34 +708,6 @@ p {
 }
 .service h3 { font-size: clamp(1.6rem, 2.1vw, 1.9rem); }
 .service p { margin: 0 0 8px; }
-
-.service-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.service-icon {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  border: 1px solid var(--line-strong);
-  background: rgba(173, 123, 244, 0.1);
-  color: #fff;
-}
-.service-icon svg { width: 24px; height: 24px; }
-.service-icon .service-icon-mark { width: 22px; height: 22px; fill: currentColor; }
-
-.service-num {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.14em;
-  color: var(--lilac-soft);
-}
 
 /* What's in each stage, e.g. "Branding / Strategy / Websites" with gold dots between.
    Every item gets a dot in front of it. The list is pulled left by one dot and clipped,
@@ -801,28 +778,520 @@ p {
   background-clip: text;
   color: transparent;
 }
-.service-feature .service-icon {
-  border-color: rgba(247, 185, 85, 0.45);
-  background: rgba(247, 185, 85, 0.1);
-  color: var(--gold-soft);
-}
-.service-feature .service-num { color: var(--gold-soft); }
 .service-feature .tags li { color: var(--gold-soft); border-color: rgba(247, 185, 85, 0.3); }
+.service-feature .service-cta { margin-top: 10px; }
 
-/* Wide screens: copy on the left, button on the right */
+/* Wide screens: copy on the left, the animation fills the right side of the card */
 @media (min-width: 900px) {
   .service-feature {
+    --pad: clamp(32px, 3.6vw, 48px);
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: clamp(32px, 5vw, 72px);
-    padding: clamp(32px, 3.6vw, 48px);
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 44%);
+    align-content: center;
+    column-gap: clamp(32px, 4vw, 56px);
+    row-gap: 14px;
   }
   .service-feature > * { grid-column: 1; }
-  .service-feature .service-top { justify-content: flex-start; gap: 16px; }
-  .service-feature p { max-width: 62ch; }
+  .service-feature p { max-width: 58ch; }
   .service-feature .tags { margin-top: 0; padding-top: 4px; }
-  .service-feature .service-cta { grid-column: 2; grid-row: 1 / span 4; align-self: center; margin: 0; }
+  .service-feature .service-cta { justify-self: start; }
+  .service-feature .scene {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+    align-self: stretch;
+    aspect-ratio: auto;
+    min-height: 300px;
+    margin: calc(var(--pad) * -1) calc(var(--pad) * -1) calc(var(--pad) * -1) 0;
+    border-bottom: 0;
+    border-left: 1px solid rgba(247, 185, 85, 0.22);
+  }
+}
+
+/* ---------- Service animations ----------
+   Each card opens with a small scene starring the rocket from the logo (inline SVG in index.html).
+   They only run while on screen (js/main.js adds .is-paused), and hold a still frame for reduced motion. */
+.scene {
+  position: relative;
+  margin: calc(var(--pad) * -1) calc(var(--pad) * -1) 8px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(90% 75% at 50% 100%, rgba(91, 31, 184, 0.34), transparent 70%),
+    linear-gradient(180deg, #14062d 0%, #0b0319 100%);
+}
+.scene > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.scene text { font-family: var(--font-mono); }
+.scene-num {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 5px 9px 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgba(11, 4, 24, 0.55);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  color: var(--lilac-soft);
+}
+.scene.is-paused,
+.scene.is-paused * { animation-play-state: paused !important; }
+
+/* Shared bits: twinkling stars and flickering flames */
+.scene .tw { animation: twinkle 3.4s ease-in-out infinite; }
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
+.flick { animation: flick 0.13s ease-in-out infinite alternate; }
+.flick-sm { animation: flick-sm 0.18s ease-in-out infinite alternate; }
+@keyframes flick {
+  from { transform: scale(0.9, 0.8); }
+  to { transform: scale(1.04, 1.12); }
+}
+@keyframes flick-sm {
+  from { transform: scale(0.94, 0.86); }
+  to { transform: scale(1.02, 1.06); }
+}
+
+/* 01 Launch: countdown, ignition, liftoff (6s loop) */
+.lc-rocket { animation: lc-rise 6s infinite; }
+@keyframes lc-rise {
+  0%, 45% { transform: translateY(0); opacity: 1; animation-timing-function: cubic-bezier(0.42, 0, 0.84, 0.6); }
+  76% { transform: translateY(-218px); opacity: 1; }
+  76.1%, 88% { transform: translateY(0); opacity: 0; animation-timing-function: ease-out; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.lc-shake { animation: lc-shake 6s linear infinite; }
+@keyframes lc-shake {
+  0%, 31%, 47%, 100% { transform: none; }
+  32% { transform: translate(0.4px, 0); }
+  33% { transform: translate(-0.5px, 0.2px); }
+  34% { transform: translate(0.6px, -0.2px); }
+  35% { transform: translate(-0.6px, 0); }
+  36% { transform: translate(0.7px, 0.3px); }
+  37% { transform: translate(-0.8px, -0.2px); }
+  38% { transform: translate(0.8px, 0); }
+  39% { transform: translate(-0.9px, 0.3px); }
+  40% { transform: translate(1px, -0.3px); }
+  41% { transform: translate(-1px, 0); }
+  42% { transform: translate(1.1px, 0.3px); }
+  43% { transform: translate(-1.1px, -0.3px); }
+  44% { transform: translate(1px, 0); }
+  45% { transform: translate(-0.8px, 0.2px); }
+  46% { transform: translate(0.5px, 0); }
+}
+.lc-flame { opacity: 0; animation: lc-flame 6s infinite; }
+@keyframes lc-flame {
+  0%, 32% { opacity: 0; }
+  34%, 76% { opacity: 1; }
+  77%, 100% { opacity: 0; }
+}
+.lc-boost { opacity: 0; animation: lc-boost 6s infinite; }
+@keyframes lc-boost {
+  0%, 43% { opacity: 0; }
+  46%, 76% { opacity: 1; }
+  77%, 100% { opacity: 0; }
+}
+.lc-trail { transform: scaleY(0); animation: lc-trail 6s infinite; }
+@keyframes lc-trail {
+  0%, 45% { transform: scaleY(0); opacity: 1; animation-timing-function: cubic-bezier(0.42, 0, 0.84, 0.6); }
+  76% { transform: scaleY(1); opacity: 1; }
+  90% { transform: scaleY(1); opacity: 0; }
+  100% { transform: scaleY(0); opacity: 0; }
+}
+.lc-puff { opacity: 0; transform: scale(0); animation: lc-puff 6s ease-out infinite; }
+@keyframes lc-puff {
+  0%, 31% { transform: translate(0, 0) scale(0); opacity: 0; }
+  37% { transform: translate(calc(var(--dx) * 0.25), -1px) scale(0.75); opacity: 0.9; }
+  50% { transform: translate(calc(var(--dx) * 0.7), -3px) scale(1.25); opacity: 0.85; }
+  66% { transform: translate(var(--dx), -6px) scale(1.6); opacity: 0.55; }
+  88% { transform: translate(calc(var(--dx) * 1.35), -10px) scale(2); opacity: 0; }
+  100% { transform: translate(0, 0) scale(0); opacity: 0; }
+}
+.lc-arm { animation: lc-arm 6s ease-in-out infinite; }
+@keyframes lc-arm {
+  0%, 29% { transform: rotate(0deg); }
+  37%, 88% { transform: rotate(-72deg); }
+  97%, 100% { transform: rotate(0deg); }
+}
+.lc-beacon { animation: beacon 1.2s steps(1, end) infinite; }
+@keyframes beacon { 50% { opacity: 0.15; } }
+.lc-t {
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  fill: var(--lilac-soft);
+  opacity: 0;
+}
+.lc-go { fill: var(--gold-soft); }
+.lc-t3 { animation: lc-t3 6s infinite; }
+.lc-t2 { animation: lc-t2 6s infinite; }
+.lc-t1 { animation: lc-t1 6s infinite; }
+.lc-go { animation: lc-go 6s infinite; }
+@keyframes lc-t3 { 0%, 14.9% { opacity: 1; } 15%, 100% { opacity: 0; } }
+@keyframes lc-t2 { 0%, 14.9% { opacity: 0; } 15%, 29.9% { opacity: 1; } 30%, 100% { opacity: 0; } }
+@keyframes lc-t1 { 0%, 29.9% { opacity: 0; } 30%, 44.9% { opacity: 1; } 45%, 100% { opacity: 0; } }
+@keyframes lc-go { 0%, 44.9% { opacity: 0; } 45%, 84% { opacity: 1; } 86%, 100% { opacity: 0; } }
+
+/* 02 Lift: the rocket hauls your listing up the search results (7s loop) */
+.lf-ranks text {
+  font-size: 10px;
+  fill: var(--text-dim);
+  text-anchor: middle;
+}
+.lf-rank1 { animation: lf-rank 7s infinite; }
+@keyframes lf-rank {
+  0%, 56% { fill: #8f84a9; }
+  60%, 86% { fill: #ffd58a; }
+  91%, 100% { fill: #8f84a9; }
+}
+.lf-caret { animation: caret-blink 1.1s steps(1, end) infinite; }
+.lf-row { animation: 7s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+.lf-a { animation-name: lf-a; }
+.lf-b { animation-name: lf-b; }
+.lf-you { animation-name: lf-you; }
+@keyframes lf-you {
+  0%, 18% { transform: translateY(0); opacity: 1; }
+  28%, 45% { transform: translateY(-36px); opacity: 1; }
+  55%, 86% { transform: translateY(-72px); opacity: 1; }
+  91% { transform: translateY(-72px); opacity: 0; }
+  91.1% { transform: translateY(0); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+@keyframes lf-b {
+  0%, 18% { transform: translateY(0); opacity: 1; }
+  28%, 86% { transform: translateY(36px); opacity: 1; }
+  91% { transform: translateY(36px); opacity: 0; }
+  91.1% { transform: translateY(0); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+@keyframes lf-a {
+  0%, 45% { transform: translateY(0); opacity: 1; }
+  55%, 86% { transform: translateY(36px); opacity: 1; }
+  91% { transform: translateY(36px); opacity: 0; }
+  91.1% { transform: translateY(0); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.lf-you-box { animation: lf-box 7s infinite; }
+@keyframes lf-box {
+  0%, 55% { stroke: #ad7bf4; }
+  60%, 86% { stroke: #f7b955; }
+  91%, 100% { stroke: #ad7bf4; }
+}
+.lf-boost { opacity: 0; animation: lf-boost 7s infinite; }
+@keyframes lf-boost {
+  0%, 16% { opacity: 0; }
+  19%, 28% { opacity: 1; }
+  31%, 43% { opacity: 0; }
+  46%, 55% { opacity: 1; }
+  58%, 100% { opacity: 0; }
+}
+.lf-badge { transform: scale(0); animation: lf-badge 7s infinite; }
+@keyframes lf-badge {
+  0%, 55% { transform: scale(0); opacity: 1; }
+  60% { transform: scale(1.2); opacity: 1; }
+  64%, 86% { transform: scale(1); opacity: 1; }
+  91% { transform: scale(1); opacity: 0; }
+  100% { transform: scale(0); opacity: 0; }
+}
+.scene .lf-badge-t {
+  font-family: var(--font-sans);
+  font-size: 8.5px;
+  font-weight: 800;
+  fill: #2a0a5c;
+  text-anchor: middle;
+}
+.lf-spark { transform: scale(0); opacity: 0; animation: lf-spark 7s infinite; }
+@keyframes lf-spark {
+  0%, 58% { transform: scale(0) rotate(0deg); opacity: 0; }
+  63% { transform: scale(1.1) rotate(45deg); opacity: 1; }
+  74% { transform: scale(0.3) rotate(90deg); opacity: 0; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+/* 03 Accelerate: full throttle, with likes, clicks and sales flying off the back */
+.ac-s { animation: ac-streak 0.8s linear infinite; }
+@keyframes ac-streak {
+  from { transform: translateX(-215px); }
+  to { transform: translateX(200px); }
+}
+.ac-drift { animation: ac-drift 3.2s ease-in-out infinite alternate; }
+@keyframes ac-drift {
+  from { transform: translateY(5px); }
+  to { transform: translateY(-6px); }
+}
+.ac-jitter { animation: ac-jitter 0.16s steps(2, end) infinite; }
+@keyframes ac-jitter {
+  0% { transform: translate(0.4px, 0); }
+  50% { transform: translate(-0.4px, 0.3px); }
+  100% { transform: translate(0.4px, 0); }
+}
+.ac-boost .flick { animation-name: flick-big; }
+@keyframes flick-big {
+  from { transform: scale(0.92, 0.95); }
+  to { transform: scale(1.06, 1.35); }
+}
+.ac-b { opacity: 0; animation: ac-bubble 3.2s infinite; }
+@keyframes ac-bubble {
+  0% { transform: translate(0, 0) scale(0); opacity: 0; }
+  10% { transform: translate(-4px, 4px) scale(1.12); opacity: 1; }
+  18% { transform: translate(-10px, 10px) scale(1); opacity: 1; animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
+  75% { opacity: 0.85; }
+  100% { transform: translate(-100px, 100px) scale(0.85); opacity: 0; }
+}
+.scene .ac-ico {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 800;
+  fill: var(--gold-soft);
+  text-anchor: middle;
+}
+.scene .ac-ico--sm { font-size: 7.5px; fill: #fff; }
+
+/* 04 Orbit: the About animation, now keeping your business company */
+.or-spin { animation: orbit 10s linear infinite; }
+.or-you {
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  fill: #fff;
+  text-anchor: middle;
+}
+
+/* 05 Whatever you freaking need: a rocket towing a banner with a new request every pass */
+.scene--whatever {
+  container-type: inline-size;
+  background:
+    radial-gradient(80% 70% at 50% 100%, rgba(91, 31, 184, 0.4), transparent 70%),
+    radial-gradient(60% 60% at 85% 10%, rgba(247, 185, 85, 0.12), transparent 70%),
+    linear-gradient(180deg, #16072f 0%, #0b0319 100%);
+}
+.service-feature .scene-num {
+  border-color: rgba(247, 185, 85, 0.4);
+  color: var(--gold-soft);
+}
+.tow {
+  position: absolute;
+  top: 33%;
+  left: 0;
+  animation: tow-fly 6.5s linear infinite;
+}
+@keyframes tow-fly {
+  0% { transform: translateX(-100%); }
+  84%, 100% { transform: translateX(100cqw); }
+}
+.tow-bob {
+  display: flex;
+  align-items: center;
+  animation: tow-bob 2.6s ease-in-out infinite alternate;
+}
+@keyframes tow-bob {
+  from { transform: translateY(-5px) rotate(-1deg); }
+  to { transform: translateY(5px) rotate(1deg); }
+}
+.tow-banner {
+  padding: 9px 14px 9px 22px;
+  border-radius: 0 4px 4px 0;
+  background: linear-gradient(180deg, #ffe6b3 0%, #f7b955 100%);
+  color: #2a0a5c;
+  font: 800 clamp(0.8rem, 1.35vw, 0.98rem)/1 var(--font-sans);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 10px 50%);
+  transform-origin: 100% 50%;
+  animation: tow-flutter 1.1s ease-in-out infinite alternate;
+}
+@keyframes tow-flutter {
+  from { transform: rotate(-1.6deg) skewY(-1.2deg); }
+  to { transform: rotate(1.6deg) skewY(1.2deg); }
+}
+.tow-rope {
+  flex: none;
+  width: 30px;
+  height: 1.5px;
+  margin-right: -19px;
+  background: linear-gradient(90deg, rgba(255, 230, 179, 0.95), rgba(255, 255, 255, 0.45));
+}
+.tow-rocket {
+  flex: none;
+  width: 88px;
+  height: 38px;
+  overflow: visible;
+}
+/* Odd jobs drifting around like space junk: a deck, a billboard, a pencil, some code */
+.wh-junk-all { stroke-opacity: 0.5; }
+.wh-junk { animation: junk-float 9s ease-in-out infinite alternate; }
+@keyframes junk-float {
+  from { transform: translate(-4px, 3px) rotate(-10deg); }
+  to { transform: translate(5px, -5px) rotate(12deg); }
+}
+
+/* ---------- Clients ----------
+   Logos sit on white cards so every brand keeps its real colours. A little rocket from the logo
+   flies from card to card (js/main.js), lighting each one up in gold as it docks. */
+.clients { overflow-x: clip; }
+.clients::before {
+  content: "";
+  position: absolute;
+  inset: 18% 0 6%;
+  z-index: -1;
+  background: radial-gradient(50% 50% at 50% 55%, rgba(91, 31, 184, 0.3), transparent 72%);
+  pointer-events: none;
+}
+
+.clients-board {
+  position: relative;
+  max-width: 1080px;
+  margin-inline: auto;
+}
+
+.clients-grid {
+  --cols: 2;
+  --gap: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 640px) {
+  .clients-grid { --cols: 3; --gap: 18px; }
+}
+@media (min-width: 1000px) {
+  .clients-grid { --cols: 5; --gap: 20px; }
+}
+
+.client {
+  position: relative;
+  flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  aspect-ratio: 16 / 11;
+  animation: zero-g 8s ease-in-out infinite; /* a gentle zero-gravity drift, out of step card to card */
+}
+.client:nth-child(3n + 1) { animation-duration: 7s; animation-delay: -2.2s; }
+.client:nth-child(3n + 2) { animation-duration: 9s; animation-delay: -5.1s; }
+.client:nth-child(4n) { animation-delay: -3.6s; }
+.client:nth-child(5n + 3) { animation-delay: -6.4s; }
+@keyframes zero-g {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -5px; }
+}
+.clients-board.is-paused .client { animation-play-state: paused; }
+.client-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f0fd 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8),
+    0 18px 40px -24px rgba(140, 80, 240, 0.8);
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), border-color 0.3s ease, background-color 0.3s ease;
+}
+/* The logo fills a fixed box inside the card; --s nudges a logo's size so they all feel equally big */
+.client img {
+  position: absolute;
+  top: 16%;
+  left: 13%;
+  width: 74%;
+  height: 68%;
+  object-fit: contain;
+  transform: scale(var(--s, 1));
+}
+.client:hover .client-card,
+.client.is-lit .client-card {
+  transform: translateY(-5px);
+  box-shadow:
+    inset 0 0 0 1px #fff,
+    0 0 0 3px rgba(247, 185, 85, 0.85),
+    0 26px 50px -20px rgba(247, 185, 85, 0.55);
+}
+
+/* The open spot: a dashed card that links to the form */
+.client--open .client-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  border: 1.5px dashed rgba(204, 181, 237, 0.5);
+  background: rgba(173, 123, 244, 0.07);
+  box-shadow: none;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+}
+.client--open:hover .client-card,
+.client--open.is-lit .client-card {
+  border-color: var(--gold);
+  background: rgba(247, 185, 85, 0.09);
+  box-shadow: 0 26px 50px -24px rgba(247, 185, 85, 0.5);
+}
+.client-open-rocket {
+  width: 22px;
+  height: 22px;
+  margin-bottom: 2px;
+  fill: var(--gold-soft);
+  transition: transform 0.4s var(--ease);
+}
+.client--open:hover .client-open-rocket { transform: translate(3px, -3px); }
+.client-open-title {
+  font-size: clamp(0.92rem, 1.4vw, 1.02rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.client-open-note {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--lilac-soft);
+}
+
+/* The rocket and its dotted gold trail (positioned by js/main.js) */
+.clients-trail {
+  position: absolute;
+  top: -48px;
+  left: -48px;
+  z-index: 2;
+  pointer-events: none;
+}
+.clients-rocket {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 24px;
+  height: 40px;
+  transform-origin: 0 0;
+  pointer-events: none;
+  will-change: transform;
+}
+.clients-rocket svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 6px rgba(140, 80, 240, 0.9));
+}
+.clients-rocket .cr-boost {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.clients-rocket.is-flying .cr-boost { opacity: 1; }
+
+@media (max-width: 639px) {
+  .client-card { border-radius: 14px; }
+  .client-open-note { font-size: 0.58rem; }
 }
 
 /* ---------- About ---------- */
@@ -834,78 +1303,76 @@ p {
   align-items: center;
 }
 
-.orbit-figure { margin: 0; }
-
-.orbit {
+/* Tyler's photo in an arched window, with a dashed "orbit" outline and a mission patch */
+.founder {
+  width: min(100%, 440px);
+  margin: 0 auto;
+}
+.founder-frame { position: relative; }
+.founder-frame::before {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border: 1px dashed rgba(204, 181, 237, 0.3);
+  border-radius: 50% 50% 38px 38px / 38% 38% 38px 38px;
+  pointer-events: none;
+}
+.founder-photo {
   position: relative;
-  width: min(100%, 460px);
-  aspect-ratio: 1;
-  margin-inline: auto;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: 50% 50% 26px 26px / 40% 40% 26px 26px;
+  background: var(--space-900);
+  box-shadow:
+    0 0 0 1px rgba(220, 196, 255, 0.4),
+    0 40px 90px -40px rgba(140, 80, 240, 0.9),
+    0 0 80px -20px rgba(140, 80, 240, 0.45);
 }
-
-.orbit-ring {
-  position: absolute;
-  inset: var(--inset);
-  border: 1px solid var(--line);
-  border-radius: 50%;
+.founder-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.orbit-ring--outer { --inset: 0; border-style: dashed; border-color: rgba(204, 181, 237, 0.22); }
-.orbit-ring--mid { --inset: 13%; border-color: rgba(173, 123, 244, 0.32); }
-.orbit-ring--inner { --inset: 26%; }
-
-/* Little gold "satellites" sitting on the outer ring (positions set inline) */
-.orbit-star {
+.founder-photo::after {
+  content: "";
   position: absolute;
-  left: var(--x);
-  top: var(--y);
+  inset: 0;
+  background: linear-gradient(180deg, transparent 62%, rgba(11, 4, 24, 0.3) 100%);
+  pointer-events: none;
+}
+/* Little gold satellites parked on the dashed outline */
+.founder-sat {
+  position: absolute;
   width: 5px;
   height: 5px;
-  margin: -2.5px 0 0 -2.5px;
   border-radius: 50%;
   background: var(--gold-soft);
   box-shadow: 0 0 10px 2px rgba(247, 185, 85, 0.55);
 }
-
-.orbit-core {
+.founder-sat--a { top: 19.5%; left: 1.5%; }
+.founder-sat--b { top: 54%; right: -16.5px; }
+.founder-patch {
   position: absolute;
-  inset: 35%;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: radial-gradient(circle at 34% 28%, #8b4ff0 0%, var(--brand) 48%, #14052e 88%);
-  box-shadow:
-    0 0 0 1px rgba(220, 196, 255, 0.38),
-    0 0 70px rgba(140, 80, 240, 0.4),
-    inset -12px -16px 34px rgba(0, 0, 0, 0.45);
+  right: -26px;
+  bottom: 13%;
+  width: 116px;
+  height: 116px;
+  filter: drop-shadow(0 14px 24px rgba(7, 2, 15, 0.6));
 }
-.orbit-core span {
+.patch-spin {
+  transform-origin: 60px 60px;
+  animation: orbit 30s linear infinite;
+}
+.patch-text {
   font-family: var(--font-mono);
-  font-size: clamp(0.62rem, 1.4vw, 0.74rem);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #fff;
-}
-
-.orbit-path {
-  position: absolute;
-  inset: 13%;
-  animation: orbit 18s linear infinite;
-}
-.orbit-rocket {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 36px;
-  height: 36px;
-  margin: -18px 0 0 -18px;
+  font-size: 8.4px;
+  font-weight: 700;
   fill: #fff;
-  transform: rotate(45deg);
-  filter: drop-shadow(0 0 10px rgba(173, 123, 244, 0.85));
 }
 @keyframes orbit { to { transform: rotate(360deg); } }
 
-.orbit-caption {
-  margin-top: 22px;
+.founder-caption {
+  margin-top: 30px;
   text-align: center;
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -954,10 +1421,8 @@ p {
 
 @media (max-width: 900px) {
   .about-grid { grid-template-columns: 1fr; }
-  .orbit { width: min(100%, 340px); }
-}
-@media (max-width: 400px) {
-  .orbit-rocket { width: 30px; height: 30px; margin: -15px 0 0 -15px; }
+  .founder { width: min(100% - 28px, 340px); }
+  .founder-patch { right: -18px; width: 96px; height: 96px; }
 }
 
 /* ---------- Weird request band ---------- */
@@ -1414,6 +1879,32 @@ p {
   }
   .js .reveal,
   .js .hero-content > * { opacity: 1; transform: none; }
-  .orbit-path { animation: none; transform: rotate(35deg); }
   .status-dot::after { display: none; }
+
+  /* Service scenes hold one telling frame each */
+  .scene,
+  .scene * { animation: none !important; }
+  .lc-rocket { transform: translateY(-34px); }
+  .lc-flame,
+  .lc-boost,
+  .lc-go { opacity: 1; }
+  .lc-trail { transform: scaleY(0.2); }
+  .lc-arm { transform: rotate(-72deg); }
+  .lc-puff { transform: translate(calc(var(--dx) * 0.7), -3px) scale(1.25); opacity: 0.8; }
+  .lf-you { transform: translateY(-72px); }
+  .lf-a,
+  .lf-b { transform: translateY(36px); }
+  .lf-badge { transform: none; }
+  .lf-you-box { stroke: #f7b955; }
+  .lf-rank1 { fill: #ffd58a; }
+  .ac-s:nth-child(odd) { transform: translateX(-40px); }
+  .ac-s:nth-child(even) { transform: translateX(60px); }
+  .ac-b { opacity: 0.9; transform: translate(-26px, 26px); }
+  .ac-b:nth-of-type(n) { opacity: 0.9; }
+  .or-spin { transform: rotate(35deg); }
+  .tow { left: 50%; transform: translateX(-50%); }
+  .patch-spin { animation: none; }
+  .client { animation: none; }
+  .clients-rocket,
+  .clients-trail { display: none; }
 }

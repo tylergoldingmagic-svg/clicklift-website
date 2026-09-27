@@ -1,5 +1,6 @@
 /* Click Lift site script: header, mobile menu, starfield, typed service line,
-   scroll reveals, stat counters and the contact form. No dependencies. */
+   scroll reveals, stat counters, service animations, the clients rocket and the contact form.
+   No dependencies. */
 (() => {
   'use strict';
 
@@ -350,6 +351,262 @@
         el.textContent = `0${el.dataset.suffix || ''}`;
         counterObserver.observe(el);
       }
+    });
+  }
+
+  /* ---------- Service animations: only run while they're on screen ---------- */
+  const scenes = document.querySelectorAll('[data-scene]');
+  if ('IntersectionObserver' in window && scenes.length) {
+    const sceneObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => entry.target.classList.toggle('is-paused', !entry.isIntersecting));
+    }, { rootMargin: '60px 0px' });
+    scenes.forEach((scene) => sceneObserver.observe(scene));
+  }
+
+  /* ---------- "Whatever you freaking need" card: a new banner every pass ---------- */
+  const tow = document.querySelector('[data-tow]');
+  if (tow) initTow(tow);
+
+  function initTow(el) {
+    const banner = el.querySelector('[data-tow-text]');
+    const lines = (el.dataset.banners || '').split('|').map((line) => line.trim()).filter(Boolean);
+    if (!banner || !lines.length) return;
+    let current = 0;
+    const show = () => {
+      // Reduced motion: the banner holds still, so it shows the slogan (the last line).
+      if (reduceMotion.matches) current = lines.length - 1;
+      banner.textContent = lines[current];
+    };
+    el.addEventListener('animationiteration', (event) => {
+      if (event.target !== el) return; // ignore the bob and flutter animations inside
+      current = (current + 1) % lines.length;
+      show();
+    });
+    if (reduceMotion.addEventListener) {
+      reduceMotion.addEventListener('change', () => {
+        current = 0;
+        show();
+      });
+    }
+    show();
+  }
+
+  /* ---------- Clients: the rocket makes the rounds ---------- */
+  const clientsBoard = document.querySelector('[data-clients]');
+  if (clientsBoard) initClientTour(clientsBoard);
+
+  function initClientTour(board) {
+    const rocket = board.querySelector('[data-clients-rocket]');
+    const canvas = board.querySelector('[data-clients-trail]');
+    const tiles = Array.from(board.querySelectorAll('[data-client]'));
+    if (!rocket || !canvas || !canvas.getContext || !tiles.length) return;
+
+    const ctx = canvas.getContext('2d');
+    const BLEED = 48; // the trail canvas reaches past the board by this much (matches the CSS)
+    const TRAIL_LIFE = 1100; // ms a trail dot takes to fade
+    let width = 0;
+    let height = 0;
+    let running = false;
+    let inView = false;
+    let rafId = 0;
+    let lastTime = 0;
+    let pausedAt = 0;
+    let pos = null; // rocket position, in px from the board's top-left
+    let heading = -45; // degrees; -90 is straight up, the logo flies at -45
+    let flight = null;
+    let docked = null;
+    let dockUntil = 0;
+    let hovered = null; // the rocket stays put while someone is looking at its card
+    let trail = [];
+    let lastDot = null;
+
+    function sizeCanvas() {
+      const rect = board.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = rect.width + BLEED * 2;
+      height = rect.height + BLEED * 2;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    // Where the rocket parks: just off the top-right corner of a card.
+    function dockPoint(tile) {
+      const b = board.getBoundingClientRect();
+      const r = tile.getBoundingClientRect();
+      return { x: r.right - b.left - 2, y: r.top - b.top + 2 };
+    }
+
+    function pickNext() {
+      const vh = window.innerHeight;
+      const others = tiles.filter((tile) => tile !== docked && (!flight || tile !== flight.tile));
+      const onScreen = others.filter((tile) => {
+        const r = tile.getBoundingClientRect();
+        return r.bottom > 60 && r.top < vh - 60;
+      });
+      const pool = onScreen.length ? onScreen : others;
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function flyTo(tile, now) {
+      if (!tile) return;
+      const from = pos || { x: -BLEED * 0.6, y: -BLEED * 0.6 };
+      const to = dockPoint(tile);
+      const dx = to.x - from.x;
+      const dy = to.y - from.y;
+      const dist = Math.hypot(dx, dy) || 1;
+      const bend = (Math.random() < 0.5 ? -1 : 1) * Math.min(110, dist * 0.32);
+      flight = {
+        tile,
+        from,
+        // the control point sits off to one side, so every hop is a gentle arc
+        ctrl: { x: (from.x + to.x) / 2 - (dy / dist) * bend, y: (from.y + to.y) / 2 + (dx / dist) * bend },
+        start: now,
+        duration: Math.min(2100, 620 + dist * 1.05),
+      };
+      if (docked) docked.classList.remove('is-lit');
+      docked = null;
+      rocket.classList.add('is-flying');
+    }
+
+    const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const bezier = (a, c, b, t) => ({
+      x: (1 - t) * (1 - t) * a.x + 2 * (1 - t) * t * c.x + t * t * b.x,
+      y: (1 - t) * (1 - t) * a.y + 2 * (1 - t) * t * c.y + t * t * b.y,
+    });
+    const tangent = (a, c, b, t) => ({
+      x: 2 * (1 - t) * (c.x - a.x) + 2 * t * (b.x - c.x),
+      y: 2 * (1 - t) * (c.y - a.y) + 2 * t * (b.y - c.y),
+    });
+    const turnToward = (target, amount) => {
+      const delta = ((target - heading + 540) % 360) - 180;
+      heading += delta * amount;
+    };
+
+    function frame(now) {
+      if (!running) return;
+      const dt = lastTime ? Math.min(64, now - lastTime) : 16;
+      lastTime = now;
+
+      if (flight) {
+        const t = Math.min(1, (now - flight.start) / flight.duration);
+        const e = ease(t);
+        const to = dockPoint(flight.tile); // follows the card if it moves (hover lift, resize)
+        pos = bezier(flight.from, flight.ctrl, to, e);
+        const d = tangent(flight.from, flight.ctrl, to, Math.min(0.995, Math.max(0.005, e)));
+        turnToward(Math.atan2(d.y, d.x) * (180 / Math.PI), Math.min(1, dt / 60));
+        const tail = { x: pos.x - Math.cos(heading * Math.PI / 180) * 13, y: pos.y - Math.sin(heading * Math.PI / 180) * 13 };
+        if (!lastDot || Math.hypot(tail.x - lastDot.x, tail.y - lastDot.y) > 7) {
+          trail.push({ x: tail.x, y: tail.y, born: now });
+          lastDot = tail;
+        }
+        if (t >= 1) {
+          docked = flight.tile;
+          docked.classList.add('is-lit');
+          flight = null;
+          lastDot = null;
+          rocket.classList.remove('is-flying');
+          dockUntil = now + 1500 + Math.random() * 900;
+        }
+      } else if (docked) {
+        const p = dockPoint(docked);
+        pos = { x: p.x, y: p.y + Math.sin(now / 420) * 2 }; // gentle hover while parked
+        turnToward(-45, Math.min(1, dt / 220)); // settle into the logo's angle
+        if (now > dockUntil && docked !== hovered) flyTo(pickNext(), now);
+      } else {
+        flyTo(pickNext(), now);
+      }
+
+      draw(now);
+      rafId = requestAnimationFrame(frame);
+    }
+
+    function draw(now) {
+      ctx.clearRect(0, 0, width, height);
+      trail = trail.filter((dot) => now - dot.born < TRAIL_LIFE);
+      for (const dot of trail) {
+        const life = 1 - (now - dot.born) / TRAIL_LIFE;
+        ctx.globalAlpha = 0.85 * life;
+        ctx.fillStyle = '#ffd58a';
+        ctx.beginPath();
+        ctx.arc(dot.x + BLEED, dot.y + BLEED, 0.8 + life * 1.1, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      if (pos) {
+        rocket.style.transform = `translate(${pos.x.toFixed(1)}px, ${pos.y.toFixed(1)}px) rotate(${(heading + 90).toFixed(1)}deg) translate(-50%, -50%)`;
+      }
+    }
+
+    function start() {
+      if (running || !inView || document.hidden || reduceMotion.matches) return;
+      const now = performance.now();
+      if (pausedAt) {
+        // pick up where it left off instead of jumping ahead
+        const gap = now - pausedAt;
+        if (flight) flight.start += gap;
+        dockUntil += gap;
+        trail.forEach((dot) => { dot.born += gap; });
+        pausedAt = 0;
+      }
+      sizeCanvas();
+      rocket.hidden = false;
+      running = true;
+      lastTime = 0;
+      rafId = requestAnimationFrame(frame);
+    }
+
+    function stop() {
+      if (!running) return;
+      running = false;
+      pausedAt = performance.now();
+      cancelAnimationFrame(rafId);
+    }
+
+    // Hover or tab to a logo and the rocket heads straight there.
+    tiles.forEach((tile) => {
+      const visit = () => {
+        hovered = tile;
+        if (running && docked !== tile && (!flight || flight.tile !== tile)) flyTo(tile, performance.now());
+      };
+      const leave = () => {
+        if (hovered !== tile) return;
+        hovered = null;
+        dockUntil = Math.max(dockUntil, performance.now() + 700);
+      };
+      tile.addEventListener('pointerenter', visit);
+      tile.addEventListener('focusin', visit);
+      tile.addEventListener('pointerleave', leave);
+      tile.addEventListener('focusout', leave);
+    });
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        inView = entries[0].isIntersecting;
+        if (inView) start(); else stop();
+      }, { threshold: 0.12 }).observe(board);
+    }
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+    if (reduceMotion.addEventListener) {
+      reduceMotion.addEventListener('change', () => {
+        if (reduceMotion.matches) {
+          stop();
+          rocket.hidden = true;
+          tiles.forEach((tile) => tile.classList.remove('is-lit'));
+          ctx.clearRect(0, 0, width, height);
+        } else {
+          start();
+        }
+      });
+    }
+    let resizeTimer = 0;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (running) sizeCanvas();
+      }, 150);
     });
   }
 

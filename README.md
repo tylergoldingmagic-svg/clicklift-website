@@ -4,7 +4,7 @@ The marketing site for **Click Lift**: *Whatever you freaking need.*
 
 A one-page static site (plain HTML, CSS and JavaScript, no build step) with a light space theme in the Click Lift purple (Pantone 2685 C): a purple planet horizon with gold city lights, a twinkling starfield and the rocket logo.
 
-Page sections, top to bottom: hero (with a line that types out one service at a time), stats, "Why Click Lift" (Big Agencies vs. Click Lift), services (Launch, Lift, Accelerate, Orbit, and Whatever you freaking need), about, the "Weird request? Perfect." band, FAQ, and the contact form.
+Page sections, top to bottom: hero (with a line that types out one service at a time), stats, "Why Click Lift" (Big Agencies vs. Click Lift), services (Launch, Lift, Accelerate, Orbit, and Whatever you freaking need, each with its own little rocket animation), clients ("Brands in our orbit"), about (with Tyler's photo), the "Weird request? Perfect." band, FAQ, and the contact form.
 
 ## What's in here
 
@@ -12,8 +12,11 @@ Page sections, top to bottom: hero (with a line that types out one service at a 
 index.html            The whole site, top to bottom
 404.html              "Lost in space" page for broken links
 css/styles.css        All styling. Brand colours live at the top in :root
-js/main.js            Menu, starfield, typed service line, scroll reveals, stat counters, contact form
+js/main.js            Menu, starfield, typed service line, scroll reveals, stat counters,
+                      service animations, the clients rocket, contact form
 assets/
+  tyler-golding-600.jpg / -900.jpg (+ .webp)  Tyler's photo in the About section
+  clients/            Client logos (trimmed, transparent WebP)
   logo.svg            Full logo, white (logo-purple.svg for light backgrounds)
   logo-mark.svg       Rocket mark, white (logo-mark-purple.svg for light backgrounds)
   favicon.svg         Browser tab icon
@@ -44,6 +47,9 @@ Fonts are [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+San
 - **Colours:** change the variables at the top of `css/styles.css`.
 - **FAQ:** each question is a `<details>` block in the FAQ section. Opening one closes the others.
 - **Service buttons:** "Let's launch", "Get me found", "Send the weird list" and the others jump to the form and tick the matching "What do you need?" option. A button's `data-need` must match that option's `value` exactly.
+- **Service animations:** each service card starts with a small scene built from the rocket in the logo (inline SVG in `index.html`, styles under "Service animations" in `css/styles.css`). 01 Launch counts down and lifts off, 02 Lift hauls your listing to #1 in the search results, 03 Accelerate flies at full throttle with likes, clicks and sales streaming off, 04 Orbit circles your business (the animation that used to be in About), and 05 tows a banner with a new request each pass. The banner lines live in the `data-banners` attribute (separated by `|`); the last one is shown on its own for visitors who turn off animations. The scenes pause when they're off screen, and people with "reduce motion" switched on see a still frame.
+- **Clients:** each logo is one `<li>` in the "Brands in our orbit" section. To add a client, put a trimmed logo with a transparent background in `assets/clients/` and copy an existing line (update `src`, `alt`, `width` and `height`). A `--s` style (for example `style="--s: 1.1"`) makes one logo a little bigger or smaller so they all feel the same size. The rocket that flies between the cards is in `js/main.js` ("Clients"); hovering a logo sends it there.
+- **About photo:** `assets/tyler-golding-900.jpg` (plus the 600px and WebP versions) is a 4:5 crop of ZF0_9578.jpg. To swap it, replace all four files with the same names and sizes.
 
 ## Contact form
 

@@ -41,7 +41,7 @@
     "email": "hello@clicklift.ca",
     "slogan": "Whatever you freaking need.",
     "description": "A small, hands-on marketing team offering SEO, ads, branding, websites, social media, creative design, and whatever you freaking need.",
-    "founder": { "@type": "Person", "name": "Tyler Golding" },
+    "founder": { "@type": "Person", "name": "Tyler Golding", "image": "https://clicklift.ca/assets/tyler-golding-900.jpg" },
     "knowsAbout": ["Website design", "Search engine optimization", "AI search optimization", "Google Ads", "Social media management", "Branding", "Logo design", "Google Business Profile optimization", "Email marketing", "Video production", "Graphic design", "Facebook and Instagram ads", "Marketing strategy", "Content marketing", "Marketing consulting"]
   }
   </script>
@@ -59,12 +59,49 @@
       <path d="M92.42 164.64 L166.01 91.05 L130.84 176.87 L104.38 203.33ZM38.69 110.91 L0 98.95 L26.46 72.48 L112.28 37.32ZM203.33 0 L185.74 42.91 L85.71 142.94 L79.74 123.59 L60.39 117.61 L160.42 17.59ZM64.44 138.89 L70.41 158.22 L27.37 175.95 L45.1 132.91ZM92.42 164.64 L79.74 123.59 L38.69 110.91 L64.24 85.36 L105.29 98.04 L117.97 139.09Z"/>
     </symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
-    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/><path d="m7.5 12.5 2-2 1.5 1.5 2.5-3"/></symbol>
-    <symbol id="i-rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(45 12 12)"><path d="M12 2.5c2.8 2.1 3.8 5.3 3.8 8.5v5H8.2v-5c0-3.2 1-6.4 3.8-8.5Z"/><circle cx="12" cy="9.6" r="1.7"/><path d="M8.2 12.8 5.6 15.4v2.8l2.6-2.2M15.8 12.8l2.6 2.6v2.8l-2.6-2.2"/><path d="M10.7 17.8c.2 1.4.6 2.5 1.3 3.3.7-.8 1.1-1.9 1.3-3.3"/></g></symbol>
-    <symbol id="i-orbit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.3"/><path d="M20.08 9.06A8.6 8.6 0 1 1 14.94 3.92"/><circle cx="18.08" cy="5.92" r="1.5" fill="currentColor" stroke="none"/></symbol>
-    <symbol id="i-megaphone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5v3A1.5 1.5 0 0 0 5.5 15H7l9 4.5v-15L7 9H5.5A1.5 1.5 0 0 0 4 10.5Z"/><path d="m8 15 1.3 4.3a1 1 0 0 0 1 .7h1.2a.8.8 0 0 0 .8-1L11.2 16"/><path d="M19.5 9.5a3.5 3.5 0 0 1 0 5"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 7 7 17"/></symbol>
+    <defs>
+      <!-- Animation parts: the logo rocket turned to point straight up and centred on 0,0
+           (100 units from nose to flame tip), its gold exhaust piece, a big boost flame, and shared gradients. -->
+      <path id="rk" d="M15.27 20.52L15.27 -21.3L29.66 13.08L29.66 28.12ZM-15.27 20.52L-29.66 28.12L-29.66 13.08L-15.27 -21.3ZM0 -57.78L7.19 -40.59L7.19 16.26L0 12.46L-7.2 16.26L-7.19 -40.59ZM15.27 20.52L0 12.46L-15.27 20.52L-15.27 6L0 -2.06L15.27 6Z"/>
+      <path id="rk-flame" d="M0 21.16L7.19 24.95L0 42.22L-7.19 24.95Z"/>
+      <path id="rk-boost" d="M0 20C9 31 10 47 0 82C-10 47 -9 31 0 20Z" fill="url(#g-boost)"/>
+      <linearGradient id="g-boost" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#fff6e0"/>
+        <stop offset=".3" stop-color="#ffd58a"/>
+        <stop offset=".62" stop-color="#f7b955" stop-opacity=".75"/>
+        <stop offset="1" stop-color="#ef9d3c" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="g-glow">
+        <stop offset="0" stop-color="#ad7bf4" stop-opacity=".6"/>
+        <stop offset="1" stop-color="#ad7bf4" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="g-core" cx=".34" cy=".28" r=".85">
+        <stop offset="0" stop-color="#8b4ff0"/>
+        <stop offset=".5" stop-color="#330072"/>
+        <stop offset="1" stop-color="#14052e"/>
+      </radialGradient>
+      <linearGradient id="g-planet" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#4b1596"/>
+        <stop offset=".014" stop-color="#2a0a5c"/>
+        <stop offset=".034" stop-color="#12052a"/>
+      </linearGradient>
+      <linearGradient id="g-trail" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#fff0d2" stop-opacity=".95"/>
+        <stop offset=".45" stop-color="#ffd58a" stop-opacity=".5"/>
+        <stop offset="1" stop-color="#ccb5ed" stop-opacity=".1"/>
+      </linearGradient>
+      <radialGradient id="g-smoke">
+        <stop offset="0" stop-color="#f1e9ff" stop-opacity=".9"/>
+        <stop offset=".55" stop-color="#d8c7f6" stop-opacity=".5"/>
+        <stop offset="1" stop-color="#d8c7f6" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="g-streak" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+        <stop offset="1" stop-color="#fff"/>
+      </linearGradient>
+    </defs>
   </svg>
 
   <header class="site-header" data-header>
@@ -79,6 +116,7 @@
         </button>
         <ul class="nav-menu" id="nav-menu" data-nav-menu>
           <li><a href="#services">Services</a></li>
+          <li><a href="#clients">Clients</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="#contact">Contact</a></li>
@@ -181,6 +219,7 @@
     </section>
 
     <!-- Services: four stages (Launch, Lift, Accelerate, Orbit) plus the catch-all.
+         Each card opens with a little animation starring the Click Lift rocket (styles in css/styles.css, "Service animations").
          Each button ticks the matching "What do you need?" option in the form (data-need = the option's value). -->
     <section class="section services" id="services" aria-labelledby="services-title">
       <div class="container">
@@ -192,9 +231,26 @@
 
         <div class="services-grid">
           <article class="card service reveal" id="launch">
-            <div class="service-top">
-              <span class="service-icon" aria-hidden="true"><svg focusable="false"><use href="#i-rocket"/></svg></span>
-              <span class="service-num" aria-hidden="true">01</span>
+            <div class="scene scene--launch" data-scene aria-hidden="true">
+              <svg viewBox="0 0 320 180" focusable="false">
+                <g class="scene-stars"><circle class="tw" cx="145.3" cy="73.2" r="0.9" fill="#e2d2ff" opacity="0.62" style="animation-delay:-0.8s"/><circle cx="63.3" cy="59.6" r="0.7" fill="#ffe2b0" opacity="0.4"/><circle cx="128.0" cy="60.4" r="1.4" fill="#fff" opacity="0.72"/><circle cx="276.9" cy="78.0" r="0.9" fill="#e2d2ff" opacity="0.55"/><circle class="tw" cx="203.2" cy="66.0" r="1.4" fill="#ffe2b0" opacity="0.4" style="animation-delay:-0.0s"/><circle cx="312.7" cy="106.8" r="1.4" fill="#fff" opacity="0.5"/><circle class="tw" cx="179.4" cy="19.0" r="0.6" fill="#e2d2ff" opacity="0.86" style="animation-delay:-3.9s"/><circle cx="216.9" cy="31.6" r="0.6" fill="#ffe2b0" opacity="0.63"/><circle class="tw" cx="199.9" cy="99.4" r="0.8" fill="#fff" opacity="0.55" style="animation-delay:-0.1s"/><circle class="tw" cx="239.5" cy="20.2" r="0.7" fill="#fff" opacity="0.77" style="animation-delay:-0.8s"/><circle cx="143.8" cy="28.9" r="1.4" fill="#e2d2ff" opacity="0.81"/><circle class="tw" cx="89.1" cy="122.5" r="1.1" fill="#fff" opacity="0.53" style="animation-delay:-2.4s"/><circle cx="36.9" cy="124.7" r="0.7" fill="#fff" opacity="0.61"/><circle class="tw" cx="97.3" cy="14.8" r="0.6" fill="#ffe2b0" opacity="0.48" style="animation-delay:-1.6s"/><circle class="tw" cx="301.4" cy="64.0" r="1.1" fill="#e2d2ff" opacity="0.43" style="animation-delay:-3.4s"/><circle cx="285.8" cy="104.1" r="0.7" fill="#fff" opacity="0.79"/></g>
+                <circle cx="160" cy="780" r="640" fill="url(#g-planet)"/><circle cx="160" cy="780" r="641" fill="none" stroke="#b58cff" stroke-opacity=".3" stroke-width="5"/><circle cx="160" cy="780" r="640" fill="none" stroke="#e6d6ff" stroke-opacity=".85"/>
+                <g fill="#ffd58a"><circle cx="48.8" cy="159.5" r="0.6" opacity="0.59"/><circle class="tw" cx="144.6" cy="148.4" r="0.7" opacity="0.5" style="animation-delay:-0.7s"/><circle class="tw" cx="139.6" cy="149.4" r="0.6" opacity="0.83" style="animation-delay:-0.8s"/><circle class="tw" cx="187.7" cy="144.4" r="0.8" opacity="0.47" style="animation-delay:-1.8s"/><circle cx="293.5" cy="160.1" r="0.7" opacity="0.98"/><circle cx="168.4" cy="149.2" r="1.0" opacity="0.75"/><circle cx="213.8" cy="151.3" r="0.8" opacity="0.96"/><circle cx="286.5" cy="163.0" r="0.6" opacity="0.55"/><circle cx="269.4" cy="153.4" r="0.8" opacity="0.94"/><circle cx="160.2" cy="150.7" r="0.7" opacity="0.62"/><circle class="tw" cx="276.3" cy="160.4" r="1.0" opacity="0.77" style="animation-delay:-3.0s"/><circle cx="250.4" cy="152.7" r="0.7" opacity="0.65"/><circle cx="243.9" cy="154.4" r="0.6" opacity="0.69"/><circle cx="244.6" cy="152.8" r="1.0" opacity="0.65"/><circle class="tw" cx="150.7" cy="145.5" r="1.0" opacity="0.81" style="animation-delay:-3.1s"/><circle cx="11.7" cy="162.0" r="0.7" opacity="0.67"/><circle cx="265.6" cy="154.6" r="0.8" opacity="0.81"/><circle cx="229.7" cy="149.9" r="0.7" opacity="0.74"/><circle class="tw" cx="137.5" cy="143.8" r="0.8" opacity="0.76" style="animation-delay:-2.0s"/><circle cx="155.4" cy="145.9" r="0.8" opacity="0.45"/><circle cx="247.1" cy="151.6" r="0.6" opacity="0.89"/><circle cx="175.4" cy="144.6" r="0.6" opacity="0.89"/></g>
+                <g transform="translate(160 140)"><rect class="lc-trail" x="-2.5" y="-218" width="5" height="218" rx="2.5" fill="url(#g-trail)"/></g>
+                <path d="M136 140.6H184L178.5 146.4H141.5Z" fill="#1d0b3c" stroke="#ccb5ed" stroke-opacity=".45" stroke-width=".8"/>
+                <path d="M122 141V86M130 141V86M122 141 130 132 122 123 130 114 122 105 130 96 122 87M120.5 86H131.5" fill="none" stroke="#ccb5ed" stroke-opacity=".5" stroke-width=".9"/>
+                <circle class="lc-beacon" cx="126" cy="83" r="1.7" fill="#ffd58a"/>
+                <g transform="translate(130 104)"><path class="lc-arm" d="M0 0H25" stroke="#ccb5ed" stroke-opacity=".55" stroke-width="1.4" stroke-linecap="round"/></g>
+                <g class="lc-smoke" fill="url(#g-smoke)"><g transform="translate(160 143)"><circle class="lc-puff" r="11" style="--dx:0px;animation-delay:0.00s"/></g><g transform="translate(151 142)"><circle class="lc-puff" r="10" style="--dx:-12px;animation-delay:0.05s"/></g><g transform="translate(169 142)"><circle class="lc-puff" r="10" style="--dx:12px;animation-delay:0.10s"/></g><g transform="translate(141 142)"><circle class="lc-puff" r="12" style="--dx:-24px;animation-delay:0.00s"/></g><g transform="translate(179 142)"><circle class="lc-puff" r="12" style="--dx:24px;animation-delay:0.05s"/></g><g transform="translate(130 143)"><circle class="lc-puff" r="10" style="--dx:-34px;animation-delay:0.10s"/></g><g transform="translate(190 143)"><circle class="lc-puff" r="10" style="--dx:34px;animation-delay:0.00s"/></g><g transform="translate(120 144)"><circle class="lc-puff" r="8" style="--dx:-42px;animation-delay:0.05s"/></g><g transform="translate(200 144)"><circle class="lc-puff" r="8" style="--dx:42px;animation-delay:0.10s"/></g></g>
+                <g transform="translate(160 123.2)"><g class="lc-rocket"><g class="lc-shake"><g transform="scale(0.62)"><g class="lc-boost"><g transform="translate(0 20)"><g class="flick"><use href="#rk-boost" transform="translate(0 -20)"/></g></g></g><g class="lc-flame"><g transform="translate(0 21.16)"><g class="flick-sm"><use href="#rk-flame" transform="translate(0 -21.16)" fill="#ffd58a"/></g></g></g><use href="#rk" fill="#fff"/></g></g></g></g>
+                <g class="lc-count">
+                  <text class="lc-t lc-t3" x="16" y="28">T-3</text>
+                  <text class="lc-t lc-t2" x="16" y="28">T-2</text>
+                  <text class="lc-t lc-t1" x="16" y="28">T-1</text>
+                  <text class="lc-t lc-go" x="16" y="28">LIFTOFF</text>
+                </g>
+              </svg>
+              <span class="scene-num">01</span>
             </div>
             <h3>Launch</h3>
             <ul class="service-list" aria-label="Launch includes">
@@ -205,9 +261,36 @@
           </article>
 
           <article class="card service reveal" id="lift" style="--delay: .06s">
-            <div class="service-top">
-              <span class="service-icon" aria-hidden="true"><svg focusable="false"><use href="#i-search"/></svg></span>
-              <span class="service-num" aria-hidden="true">02</span>
+            <div class="scene scene--lift" data-scene aria-hidden="true">
+              <svg viewBox="0 0 320 180" focusable="false">
+                <g class="scene-stars"><circle class="tw" cx="301.1" cy="29.6" r="0.6" fill="#e2d2ff" opacity="0.69" style="animation-delay:-3.5s"/><circle class="tw" cx="281.8" cy="34.8" r="1.1" fill="#fff" opacity="0.56" style="animation-delay:-2.6s"/><circle class="tw" cx="267.5" cy="11.5" r="0.7" fill="#e2d2ff" opacity="0.76" style="animation-delay:-1.2s"/><circle cx="15.2" cy="32.6" r="0.8" fill="#e2d2ff" opacity="0.37"/><circle cx="242.7" cy="42.2" r="0.9" fill="#fff" opacity="0.82"/><circle cx="238.1" cy="19.4" r="1.1" fill="#e2d2ff" opacity="0.61"/><circle cx="290.2" cy="10.7" r="0.8" fill="#fff" opacity="0.56"/></g>
+                <g transform="translate(32 13)">
+                  <rect width="196" height="26" rx="13" fill="#fff" fill-opacity=".06" stroke="#ccb5ed" stroke-opacity=".32"/>
+                  <circle cx="15.5" cy="12.5" r="4.6" fill="none" stroke="#ccb5ed" stroke-width="1.4"/>
+                  <path d="M18.9 16 22.2 19.3" stroke="#ccb5ed" stroke-width="1.4" stroke-linecap="round"/>
+                  <rect x="31" y="10.5" width="56" height="5" rx="2.5" fill="#fff" fill-opacity=".42"/>
+                  <rect x="91" y="10.5" width="30" height="5" rx="2.5" fill="#fff" fill-opacity=".42"/>
+                  <rect class="lf-caret" x="125" y="7" width="1.6" height="12" rx=".8" fill="#ffd58a"/>
+                </g>
+                <g class="lf-ranks">
+                  <text class="lf-rank1" x="19" y="71">1</text>
+                  <text x="19" y="107">2</text>
+                  <text x="19" y="143">3</text>
+                </g>
+                <g transform="translate(32 53)"><g class="lf-row lf-a"><rect width="252" height="28" rx="8" fill="#fff" fill-opacity=".045" stroke="#ccb5ed" stroke-opacity=".18"/><circle cx="15" cy="14" r="7" fill="#ccb5ed" fill-opacity=".22"/><rect x="30" y="8.5" width="104" height="4.5" rx="2.25" fill="#fff" fill-opacity=".26"/><rect x="30" y="16.5" width="66" height="3.5" rx="1.75" fill="#fff" fill-opacity=".13"/></g></g>
+                <g transform="translate(32 89)"><g class="lf-row lf-b"><rect width="252" height="28" rx="8" fill="#fff" fill-opacity=".045" stroke="#ccb5ed" stroke-opacity=".18"/><circle cx="15" cy="14" r="7" fill="#ccb5ed" fill-opacity=".22"/><rect x="30" y="8.5" width="86" height="4.5" rx="2.25" fill="#fff" fill-opacity=".26"/><rect x="30" y="16.5" width="52" height="3.5" rx="1.75" fill="#fff" fill-opacity=".13"/></g></g>
+                <g transform="translate(32 125)"><g class="lf-row lf-you">
+                  <rect class="lf-you-box" width="252" height="28" rx="8" fill="#5b1fb8" fill-opacity=".4" stroke="#ad7bf4" stroke-opacity=".85"/>
+                  <circle cx="15" cy="14" r="8" fill="#330072" stroke="#ccb5ed" stroke-opacity=".6" stroke-width=".8"/>
+                  <use href="#rk" transform="translate(15 14.4) rotate(45) scale(.1)" fill="#fff"/>
+                  <rect x="30" y="8.5" width="92" height="4.5" rx="2.25" fill="#fff"/>
+                  <rect x="30" y="16.5" width="58" height="3.5" rx="1.75" fill="#ccb5ed" fill-opacity=".75"/>
+                  <g transform="translate(196 14)"><g class="lf-badge"><rect x="-13" y="-7" width="26" height="14" rx="7" fill="#f7b955"/><text class="lf-badge-t" y="3.3">#1</text></g></g>
+                  <g transform="translate(233 14)"><g transform="scale(0.22)"><g class="lf-boost"><g transform="translate(0 20)"><g class="flick"><use href="#rk-boost" transform="translate(0 -20)"/></g></g></g><g transform="translate(0 21.16)"><g class="flick-sm"><use href="#rk-flame" transform="translate(0 -21.16)" fill="#ffd58a"/></g></g><use href="#rk" fill="#fff"/></g></g>
+                </g></g>
+                <g fill="#ffd58a"><g transform="translate(252 49)"><path class="lf-spark" d="M0-4.5 1.1-1.1 4.5 0 1.1 1.1 0 4.5-1.1 1.1-4.5 0-1.1-1.1Z" style="animation-delay:0s"/></g><g transform="translate(288 57)"><path class="lf-spark" d="M0-4.5 1.1-1.1 4.5 0 1.1 1.1 0 4.5-1.1 1.1-4.5 0-1.1-1.1Z" style="animation-delay:0.12s"/></g><g transform="translate(280 44)"><path class="lf-spark" d="M0-4.5 1.1-1.1 4.5 0 1.1 1.1 0 4.5-1.1 1.1-4.5 0-1.1-1.1Z" style="animation-delay:0.24s"/></g></g>
+              </svg>
+              <span class="scene-num">02</span>
             </div>
             <h3>Lift</h3>
             <ul class="service-list" aria-label="Lift includes">
@@ -218,9 +301,17 @@
           </article>
 
           <article class="card service reveal" id="accelerate" style="--delay: .12s">
-            <div class="service-top">
-              <span class="service-icon" aria-hidden="true"><svg focusable="false"><use href="#i-megaphone"/></svg></span>
-              <span class="service-num" aria-hidden="true">03</span>
+            <div class="scene scene--accelerate" data-scene aria-hidden="true">
+              <svg viewBox="0 0 320 180" focusable="false">
+                <g class="scene-stars"><circle cx="181.7" cy="112.2" r="0.8" fill="#e2d2ff" opacity="0.64"/><circle cx="206.7" cy="109.7" r="1.1" fill="#ffe2b0" opacity="0.54"/><circle cx="296.6" cy="112.8" r="0.8" fill="#e2d2ff" opacity="0.6"/><circle cx="193.1" cy="129.6" r="0.9" fill="#fff" opacity="0.84"/><circle cx="215.9" cy="25.7" r="0.6" fill="#fff" opacity="0.54"/><circle cx="26.4" cy="67.5" r="1.4" fill="#fff" opacity="0.54"/><circle cx="115.0" cy="116.6" r="1.1" fill="#fff" opacity="0.59"/><circle cx="216.3" cy="149.1" r="0.6" fill="#fff" opacity="0.44"/><circle cx="132.3" cy="64.5" r="0.7" fill="#e2d2ff" opacity="0.76"/><circle cx="116.3" cy="96.6" r="0.8" fill="#fff" opacity="0.64"/><circle cx="246.4" cy="24.6" r="0.7" fill="#e2d2ff" opacity="0.36"/><circle cx="274.8" cy="147.7" r="0.7" fill="#ffe2b0" opacity="0.9"/><circle cx="32.9" cy="107.1" r="1.4" fill="#fff" opacity="0.52"/><circle class="tw" cx="86.3" cy="153.3" r="0.9" fill="#e2d2ff" opacity="0.58" style="animation-delay:-0.2s"/><circle cx="57.6" cy="167.0" r="1.4" fill="#fff" opacity="0.54"/><circle cx="229.0" cy="65.4" r="0.9" fill="#fff" opacity="0.61"/></g>
+                <g transform="translate(160 90) rotate(135)"><rect class="ac-s" y="-88" width="30" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.42" style="animation-duration:1.12s;animation-delay:-0.44s"/><rect class="ac-s" y="-76" width="64" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.43" style="animation-duration:0.87s;animation-delay:-0.32s"/><rect class="ac-s" y="-64" width="46" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.61" style="animation-duration:0.68s;animation-delay:-0.06s"/><rect class="ac-s" y="-54" width="24" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.81" style="animation-duration:0.6s;animation-delay:-0.25s"/><rect class="ac-s" y="-42" width="18" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.69" style="animation-duration:1.12s;animation-delay:-0.71s"/><rect class="ac-s" y="-32" width="18" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.89" style="animation-duration:0.9s;animation-delay:-0.36s"/><rect class="ac-s" y="-20" width="18" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.61" style="animation-duration:0.88s;animation-delay:-0.12s"/><rect class="ac-s" y="-8" width="46" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.81" style="animation-duration:0.62s;animation-delay:-0.19s"/><rect class="ac-s" y="4" width="24" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.49" style="animation-duration:0.61s;animation-delay:-0.35s"/><rect class="ac-s" y="14" width="18" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.43" style="animation-duration:0.88s;animation-delay:-0.06s"/><rect class="ac-s" y="26" width="24" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.79" style="animation-duration:0.85s;animation-delay:-0.45s"/><rect class="ac-s" y="38" width="38" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.55" style="animation-duration:0.9s;animation-delay:-0.41s"/><rect class="ac-s" y="48" width="64" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.44" style="animation-duration:0.66s;animation-delay:-0.51s"/><rect class="ac-s" y="60" width="30" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.76" style="animation-duration:0.87s;animation-delay:-0.76s"/><rect class="ac-s" y="70" width="30" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.66" style="animation-duration:0.92s;animation-delay:-0.07s"/><rect class="ac-s" y="82" width="24" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.64" style="animation-duration:1.0s;animation-delay:-0.15s"/><rect class="ac-s" y="92" width="18" height="1.3" rx=".65" fill="url(#g-streak)" opacity="0.68" style="animation-duration:1.13s;animation-delay:-0.09s"/></g>
+                <g transform="translate(127 72)"><g class="ac-b" style="animation-delay:0s"><circle r="8.5" fill="#4a0fa0" fill-opacity=".75" stroke="#ccb5ed" stroke-opacity=".6" stroke-width=".8"/><path d="M0 3.7C-3.9 1-4.9-1.2-4.1-2.9-3.3-4.5-1.2-4.6 0-2.9 1.2-4.6 3.3-4.5 4.1-2.9 4.9-1.2 3.9 1 0 3.7Z" fill="#ffd58a"/></g></g><g transform="translate(173 114)"><g class="ac-b" style="animation-delay:-0.8s"><circle r="8.5" fill="#4a0fa0" fill-opacity=".75" stroke="#ccb5ed" stroke-opacity=".6" stroke-width=".8"/><path d="M-2.4-4.6 3.9 1.1 1 1.4 2.5 4.5 1.2 5.1-.3 2 -2.4 4Z" fill="#fff"/></g></g><g transform="translate(112 58)"><g class="ac-b" style="animation-delay:-1.6s"><circle r="8.5" fill="#4a0fa0" fill-opacity=".75" stroke="#ccb5ed" stroke-opacity=".6" stroke-width=".8"/><text class="ac-ico" y="3.6">$</text></g></g><g transform="translate(190 102)"><g class="ac-b" style="animation-delay:-2.4s"><circle r="8.5" fill="#4a0fa0" fill-opacity=".75" stroke="#ccb5ed" stroke-opacity=".6" stroke-width=".8"/><text class="ac-ico ac-ico--sm" y="3">+1</text></g></g>
+                <g transform="translate(152 94) rotate(45)"><g class="ac-drift"><g class="ac-jitter">
+                  <circle r="34" fill="url(#g-glow)" opacity=".5"/>
+                  <g transform="scale(0.62)"><g class="ac-boost"><g transform="translate(0 20)"><g class="flick"><use href="#rk-boost" transform="translate(0 -20)"/></g></g></g><g transform="translate(0 21.16)"><g class="flick-sm"><use href="#rk-flame" transform="translate(0 -21.16)" fill="#ffd58a"/></g></g><use href="#rk" fill="#fff"/></g>
+                </g></g></g>
+              </svg>
+              <span class="scene-num">03</span>
             </div>
             <h3>Accelerate</h3>
             <ul class="service-list" aria-label="Accelerate includes">
@@ -231,9 +322,31 @@
           </article>
 
           <article class="card service reveal" id="orbit" style="--delay: .18s">
-            <div class="service-top">
-              <span class="service-icon" aria-hidden="true"><svg focusable="false"><use href="#i-orbit"/></svg></span>
-              <span class="service-num" aria-hidden="true">04</span>
+            <div class="scene scene--orbit" data-scene aria-hidden="true">
+              <svg viewBox="0 0 320 180" focusable="false">
+                <defs>
+                  <linearGradient id="g-otrail" gradientUnits="userSpaceOnUse" x1="0" y1="-58" x2="-54.5" y2="-19.8">
+                    <stop offset="0" stop-color="#ffd58a" stop-opacity=".8"/>
+                    <stop offset="1" stop-color="#ffd58a" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <g class="scene-stars"><circle class="tw" cx="271.5" cy="35.7" r="0.7" fill="#fff" opacity="0.52" style="animation-delay:-4.0s"/><circle cx="54.3" cy="92.3" r="0.8" fill="#e2d2ff" opacity="0.77"/><circle cx="259.1" cy="54.7" r="0.8" fill="#e2d2ff" opacity="0.58"/><circle cx="46.1" cy="131.5" r="0.6" fill="#ffe2b0" opacity="0.38"/><circle class="tw" cx="261.8" cy="111.9" r="1.1" fill="#fff" opacity="0.83" style="animation-delay:-2.2s"/><circle cx="264.5" cy="13.3" r="0.7" fill="#fff" opacity="0.36"/><circle class="tw" cx="296.9" cy="100.7" r="0.9" fill="#fff" opacity="0.42" style="animation-delay:-3.1s"/><circle class="tw" cx="226.7" cy="173.8" r="0.6" fill="#e2d2ff" opacity="0.76" style="animation-delay:-3.3s"/><circle class="tw" cx="8.1" cy="52.0" r="1.4" fill="#ffe2b0" opacity="0.66" style="animation-delay:-0.6s"/><circle class="tw" cx="302.0" cy="50.1" r="0.6" fill="#e2d2ff" opacity="0.95" style="animation-delay:-0.8s"/><circle cx="26.1" cy="88.5" r="0.9" fill="#e2d2ff" opacity="0.59"/><circle cx="46.8" cy="28.2" r="0.9" fill="#fff" opacity="0.59"/><circle cx="283.9" cy="135.5" r="0.8" fill="#e2d2ff" opacity="0.8"/><circle class="tw" cx="28.5" cy="51.6" r="0.9" fill="#e2d2ff" opacity="0.77" style="animation-delay:-3.1s"/></g>
+                <circle cx="160" cy="90" r="52" fill="url(#g-glow)" opacity=".5"/>
+                <circle cx="160" cy="90" r="76" fill="none" stroke="#ccb5ed" stroke-opacity=".28" stroke-dasharray="2 4"/>
+                <circle cx="160" cy="90" r="58" fill="none" stroke="#ad7bf4" stroke-opacity=".38"/>
+                <circle cx="160" cy="90" r="40" fill="none" stroke="#ccb5ed" stroke-opacity=".16"/>
+                <circle cx="186.0" cy="18.6" r="4.6" fill="#f7b955" fill-opacity=".2"/><circle class="tw" cx="186.0" cy="18.6" r="1.8" fill="#ffd58a" style="animation-delay:-0.7s"/><circle cx="203.6" cy="152.3" r="4.6" fill="#f7b955" fill-opacity=".2"/><circle class="tw" cx="203.6" cy="152.3" r="1.8" fill="#ffd58a" style="animation-delay:0.6s"/><circle cx="88.6" cy="116.0" r="4.6" fill="#f7b955" fill-opacity=".2"/><circle class="tw" cx="88.6" cy="116.0" r="1.8" fill="#ffd58a" style="animation-delay:1.6s"/>
+                <circle cx="160" cy="90" r="25" fill="url(#g-core)" stroke="#dcc4ff" stroke-opacity=".45"/>
+                <text class="or-you" x="160" y="93.2">YOU</text>
+                <g transform="translate(160 90)"><g class="or-spin">
+                  <path d="M0-58A58 58 0 0 0 -54.50 -19.84" fill="none" stroke="url(#g-otrail)" stroke-width="1.6" stroke-linecap="round"/>
+                  <g transform="translate(0 -58) rotate(90)">
+                    <circle r="16" fill="url(#g-glow)" opacity=".9"/>
+                    <g transform="scale(0.33)"><g transform="translate(0 21.16)"><g class="flick-sm"><use href="#rk-flame" transform="translate(0 -21.16)" fill="#ffd58a"/></g></g><use href="#rk" fill="#fff"/></g>
+                  </g>
+                </g></g>
+              </svg>
+              <span class="scene-num">04</span>
             </div>
             <h3>Orbit</h3>
             <ul class="service-list" aria-label="Orbit includes">
@@ -244,9 +357,26 @@
           </article>
 
           <article class="card service service-feature reveal" id="whatever">
-            <div class="service-top">
-              <span class="service-icon" aria-hidden="true"><svg class="service-icon-mark" focusable="false"><use href="#logo-mark"/></svg></span>
-              <span class="service-num" aria-hidden="true">05</span>
+            <div class="scene scene--whatever" data-scene aria-hidden="true">
+              <svg class="scene-bg" viewBox="0 0 480 270" preserveAspectRatio="xMidYMax slice" focusable="false">
+                <g class="scene-stars"><circle cx="48.3" cy="199.0" r="0.7" fill="#fff" opacity="0.95"/><circle cx="147.3" cy="77.4" r="1.4" fill="#ffe2b0" opacity="0.9"/><circle class="tw" cx="241.6" cy="70.6" r="0.9" fill="#ffe2b0" opacity="0.94" style="animation-delay:-3.0s"/><circle class="tw" cx="453.8" cy="110.1" r="0.6" fill="#fff" opacity="0.69" style="animation-delay:-3.1s"/><circle cx="240.9" cy="157.6" r="0.7" fill="#fff" opacity="0.49"/><circle cx="394.2" cy="27.7" r="0.9" fill="#fff" opacity="0.54"/><circle class="tw" cx="88.0" cy="39.3" r="0.8" fill="#e2d2ff" opacity="0.68" style="animation-delay:-1.5s"/><circle class="tw" cx="393.2" cy="151.8" r="0.9" fill="#ffe2b0" opacity="0.7" style="animation-delay:-0.7s"/><circle class="tw" cx="422.9" cy="57.6" r="1.4" fill="#fff" opacity="0.77" style="animation-delay:-3.5s"/><circle class="tw" cx="286.7" cy="166.4" r="0.9" fill="#e2d2ff" opacity="0.64" style="animation-delay:-2.6s"/><circle cx="204.0" cy="125.8" r="1.4" fill="#fff" opacity="0.52"/><circle class="tw" cx="172.3" cy="91.0" r="1.4" fill="#ffe2b0" opacity="0.56" style="animation-delay:-2.6s"/><circle cx="318.5" cy="105.2" r="0.9" fill="#e2d2ff" opacity="0.67"/><circle cx="103.6" cy="196.7" r="0.7" fill="#fff" opacity="0.46"/><circle class="tw" cx="10.8" cy="206.0" r="1.1" fill="#e2d2ff" opacity="0.41" style="animation-delay:-2.1s"/><circle cx="306.7" cy="89.7" r="0.6" fill="#fff" opacity="0.6"/><circle cx="109.5" cy="170.0" r="0.9" fill="#fff" opacity="0.72"/><circle cx="211.2" cy="24.9" r="0.8" fill="#e2d2ff" opacity="0.61"/><circle class="tw" cx="41.7" cy="176.1" r="0.7" fill="#fff" opacity="0.61" style="animation-delay:-1.9s"/><circle cx="340.0" cy="156.7" r="1.4" fill="#ffe2b0" opacity="0.57"/><circle class="tw" cx="203.4" cy="155.2" r="1.4" fill="#e2d2ff" opacity="0.36" style="animation-delay:-2.6s"/><circle class="tw" cx="324.5" cy="8.8" r="0.9" fill="#ffe2b0" opacity="0.65" style="animation-delay:-3.4s"/><circle class="tw" cx="333.7" cy="115.5" r="1.4" fill="#ffe2b0" opacity="0.95" style="animation-delay:-1.2s"/><circle class="tw" cx="155.0" cy="30.7" r="1.1" fill="#e2d2ff" opacity="0.41" style="animation-delay:-0.7s"/><circle cx="434.1" cy="181.8" r="0.6" fill="#ffe2b0" opacity="0.64"/><circle cx="43.2" cy="143.3" r="0.6" fill="#fff" opacity="0.83"/><circle cx="59.4" cy="18.7" r="1.1" fill="#e2d2ff" opacity="0.71"/><circle class="tw" cx="147.8" cy="171.9" r="0.8" fill="#e2d2ff" opacity="0.48" style="animation-delay:-3.9s"/><circle cx="20.2" cy="32.9" r="0.8" fill="#e2d2ff" opacity="0.78"/><circle cx="320.7" cy="133.0" r="1.1" fill="#fff" opacity="0.83"/></g>
+                <circle cx="240" cy="1130" r="900" fill="url(#g-planet)"/><circle cx="240" cy="1130" r="901" fill="none" stroke="#b58cff" stroke-opacity=".3" stroke-width="6"/><circle cx="240" cy="1130" r="900" fill="none" stroke="#e6d6ff" stroke-opacity=".85"/>
+                <g fill="#ffd58a"><circle cx="297.0" cy="244.5" r="0.6" opacity="0.91"/><circle cx="123.6" cy="241.2" r="0.7" opacity="0.51"/><circle class="tw" cx="122.4" cy="247.8" r="0.7" opacity="0.46" style="animation-delay:-2.9s"/><circle class="tw" cx="433.2" cy="263.9" r="0.7" opacity="0.87" style="animation-delay:-1.5s"/><circle class="tw" cx="214.4" cy="235.1" r="0.6" opacity="0.57" style="animation-delay:-0.1s"/><circle cx="412.8" cy="253.5" r="0.7" opacity="0.75"/><circle cx="103.0" cy="255.7" r="0.7" opacity="0.98"/><circle class="tw" cx="146.6" cy="242.6" r="0.7" opacity="0.96" style="animation-delay:-2.7s"/><circle cx="387.3" cy="252.8" r="0.8" opacity="0.49"/><circle cx="150.0" cy="246.6" r="0.7" opacity="0.71"/><circle cx="34.4" cy="269.5" r="0.6" opacity="0.97"/><circle cx="195.6" cy="241.2" r="1.0" opacity="0.65"/><circle cx="12.2" cy="262.9" r="0.7" opacity="0.79"/><circle cx="63.2" cy="253.7" r="1.0" opacity="0.64"/><circle cx="251.5" cy="243.2" r="0.6" opacity="0.77"/><circle class="tw" cx="178.4" cy="239.0" r="1.0" opacity="0.97" style="animation-delay:-2.6s"/><circle cx="291.4" cy="246.4" r="0.8" opacity="0.6"/><circle class="tw" cx="50.7" cy="262.0" r="0.8" opacity="0.55" style="animation-delay:-3.4s"/><circle class="tw" cx="327.8" cy="250.2" r="0.7" opacity="0.85" style="animation-delay:-1.6s"/><circle cx="436.6" cy="255.1" r="0.8" opacity="0.9"/><circle cx="203.7" cy="234.5" r="0.6" opacity="0.89"/><circle cx="104.1" cy="256.1" r="0.7" opacity="0.8"/><circle cx="57.5" cy="257.4" r="0.7" opacity="0.48"/><circle cx="73.5" cy="260.5" r="0.7" opacity="0.99"/><circle cx="234.5" cy="242.5" r="1.0" opacity="0.6"/><circle cx="426.5" cy="254.0" r="0.7" opacity="0.79"/><circle cx="165.1" cy="237.3" r="0.8" opacity="0.73"/><circle cx="241.3" cy="233.8" r="0.8" opacity="0.83"/><circle class="tw" cx="360.5" cy="245.8" r="0.8" opacity="0.91" style="animation-delay:-0.1s"/><circle cx="340.2" cy="251.0" r="0.8" opacity="0.81"/><circle class="tw" cx="13.4" cy="269.1" r="0.8" opacity="0.63" style="animation-delay:-2.8s"/><circle cx="240.2" cy="241.8" r="0.8" opacity="0.64"/><circle class="tw" cx="350.4" cy="250.6" r="0.8" opacity="0.96" style="animation-delay:-0.5s"/><circle cx="216.7" cy="238.0" r="0.8" opacity="0.73"/><circle class="tw" cx="85.1" cy="257.3" r="1.0" opacity="0.61" style="animation-delay:-1.3s"/><circle cx="201.3" cy="241.8" r="1.0" opacity="0.62"/></g>
+                <g class="wh-junk-all" fill="none" stroke="#ccb5ed" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                  <g transform="translate(150 196) rotate(-12)"><g class="wh-junk" style="animation-duration:9s"><rect x="-11" y="-8" width="22" height="15" rx="2"/><path d="M-6 3V0M-1 3V-3M4 3V-1M0 7v4M-4 11h8"/></g></g>
+                  <g transform="translate(330 58) rotate(10)"><g class="wh-junk" style="animation-duration:11s;animation-delay:-3s"><rect x="-13" y="-9" width="26" height="12" rx="1.5"/><path d="M-7 3v9M7 3v9"/></g></g>
+                  <g transform="translate(362 176) rotate(18)"><g class="wh-junk" style="animation-duration:8s;animation-delay:-5s"><path d="M-8 8-6 1 3-8 7-4-2 5Z"/><path d="M1-6 5-2"/></g></g>
+                  <g transform="translate(206 44)"><g class="wh-junk" style="animation-duration:10s;animation-delay:-1.5s"><path d="M-4-6-9 0-4 6M4-6 9 0 4 6M1.5-8-1.5 8"/></g></g>
+                </g>
+              </svg>
+              <div class="tow" data-tow data-banners="Deck due tomorrow?|Billboard by Friday?|Need words written?|Tech meltdown?|Mess to clean up?|Whatever you freaking need.">
+                <div class="tow-bob">
+                  <span class="tow-banner" data-tow-text>Whatever you freaking need.</span>
+                  <span class="tow-rope"></span>
+                  <svg class="tow-rocket" viewBox="-86 -32 148 64" focusable="false"><circle cx="8" r="30" fill="url(#g-glow)"/><g transform="rotate(90)"><g transform="scale(1)"><g class="tow-boost"><g transform="translate(0 20)"><g class="flick"><use href="#rk-boost" transform="translate(0 -20)"/></g></g></g><g transform="translate(0 21.16)"><g class="flick-sm"><use href="#rk-flame" transform="translate(0 -21.16)" fill="#ffd58a"/></g></g><use href="#rk" fill="#fff"/></g></g></svg>
+                </div>
+              </div>
+              <span class="scene-num">05</span>
             </div>
             <h3>Whatever you freaking need.</h3>
             <p>Sometimes you just need something done, and done right. The presentation due tomorrow, the billboard someone forgot about, copywriting, tech, or fixing a mess someone else left behind. We'll lift it off your plate and make it happen.</p>
@@ -259,27 +389,76 @@
       </div>
     </section>
 
+    <!-- Clients. To add one: drop a logo in assets/clients/ (transparent PNG or WebP, trimmed) and copy one of the <li> lines.
+         The little rocket visits a random logo every couple of seconds (js/main.js, "Clients"). -->
+    <section class="section clients" id="clients" aria-labelledby="clients-title">
+      <div class="container">
+        <header class="section-head section-head--center reveal">
+          <p class="eyebrow">03 / Clients</p>
+          <h2 id="clients-title">Brands in our orbit.</h2>
+          <p class="section-intro">From insurance brokers to dental clinics, here are some of the businesses we get to lift.</p>
+        </header>
+
+        <div class="clients-board reveal" data-clients data-scene>
+          <ul class="clients-grid" aria-label="Some of our clients">
+          <li class="client" data-client><div class="client-card"><img src="assets/clients/blocks-agencies.webp" alt="Block's Agencies" width="560" height="262" loading="lazy" decoding="async"></div></li>
+          <li class="client" data-client><div class="client-card"><img src="assets/clients/oasis-insurance.webp" alt="Oasis Outdoor Adventure &amp; Sport Insurance Solutions Inc." width="560" height="152" loading="lazy" decoding="async" style="--s: 1.14"></div></li>
+          <li class="client" data-client><div class="client-card"><img src="assets/clients/yxe-windows-doors.webp" alt="YXE Windows &amp; Doors" width="185" height="280" loading="lazy" decoding="async"></div></li>
+          <li class="client" data-client><div class="client-card"><img src="assets/clients/amity-trust.webp" alt="Amity Trust" width="472" height="138" loading="lazy" decoding="async"></div></li>
+          <li class="client" data-client><div class="client-card"><img src="assets/clients/little-tooth-dental.webp" alt="The Little Tooth Dental Clinic" width="377" height="280" loading="lazy" decoding="async"></div></li>
+          <li class="client" data-client><div class="client-card"><img src="assets/clients/mello-insurance.webp" alt="mello Insurance" width="560" height="228" loading="lazy" decoding="async"></div></li>
+          <li class="client" data-client><div class="client-card"><img src="assets/clients/pasqua-south-dental.webp" alt="Pasqua South Dental" width="393" height="280" loading="lazy" decoding="async"></div></li>
+          <li class="client" data-client><div class="client-card"><img src="assets/clients/trustmark-insurance.webp" alt="Trustmark Insurance Brokers" width="253" height="280" loading="lazy" decoding="async" style="--s: 1.08"></div></li>
+          <li class="client" data-client><div class="client-card"><img src="assets/clients/prairie-insurance.webp" alt="Prairie Insurance" width="560" height="246" loading="lazy" decoding="async"></div></li>
+          <li class="client" data-client><div class="client-card"><img src="assets/clients/brothers-custom.webp" alt="Brothers Custom YXE" width="211" height="210" loading="lazy" decoding="async" style="--s: 1.05"></div></li>
+          <li class="client" data-client><div class="client-card"><img src="assets/clients/the-prairie-group.webp" alt="The Prairie Group" width="300" height="280" loading="lazy" decoding="async" style="--s: 1.08"></div></li>
+          <li class="client" data-client><div class="client-card"><img src="assets/clients/valet-finance.webp" alt="Valet Finance" width="400" height="139" loading="lazy" decoding="async"></div></li>
+          <li class="client" data-client><div class="client-card"><img src="assets/clients/connex-adjusters.webp" alt="Connex Adjusters Inc." width="560" height="126" loading="lazy" decoding="async"></div></li>
+          <li class="client" data-client><div class="client-card"><img src="assets/clients/pete-z.webp" alt="Pete Z" width="358" height="108" loading="lazy" decoding="async" style="--s: 0.84"></div></li>
+            <li class="client client--open" data-client>
+              <a class="client-card" href="#contact">
+                <svg class="client-open-rocket" aria-hidden="true" focusable="false"><use href="#logo-mark"/></svg>
+                <span class="client-open-title">Your logo here?</span>
+                <span class="client-open-note">One client per market</span>
+              </a>
+            </li>
+          </ul>
+          <canvas class="clients-trail" aria-hidden="true" data-clients-trail></canvas>
+          <div class="clients-rocket" aria-hidden="true" hidden data-clients-rocket>
+            <svg viewBox="-30 -58 60 100" focusable="false"><g class="cr-boost"><g transform="translate(0 20)"><g class="flick"><use href="#rk-boost" transform="translate(0 -20)"/></g></g></g><use href="#rk-flame" fill="#ffd58a"/><use href="#rk" fill="#fff" stroke="#330072" stroke-width="6" stroke-linejoin="round" paint-order="stroke"/></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- About -->
     <section class="section about" id="about" aria-labelledby="about-title">
       <div class="container about-grid">
-        <figure class="orbit-figure reveal">
-          <div class="orbit" aria-hidden="true">
-            <span class="orbit-ring orbit-ring--outer"></span>
-            <span class="orbit-ring orbit-ring--mid"></span>
-            <span class="orbit-ring orbit-ring--inner"></span>
-            <span class="orbit-star" style="--x: 67.1%; --y: 3.0%"></span>
-            <span class="orbit-star" style="--x: 78.7%; --y: 91.0%"></span>
-            <span class="orbit-star" style="--x: 3.0%; --y: 67.1%"></span>
-            <span class="orbit-core"><span>Your team</span></span>
-            <span class="orbit-path">
-              <svg class="orbit-rocket" focusable="false"><use href="#logo-mark"/></svg>
-            </span>
+        <figure class="founder reveal">
+          <div class="founder-frame">
+            <div class="founder-photo">
+              <picture>
+                <source type="image/webp" srcset="assets/tyler-golding-600.webp 600w, assets/tyler-golding-900.webp 900w" sizes="(max-width: 900px) 340px, 440px">
+                <img src="assets/tyler-golding-900.jpg" srcset="assets/tyler-golding-600.jpg 600w, assets/tyler-golding-900.jpg 900w" sizes="(max-width: 900px) 340px, 440px" width="900" height="1125" alt="Tyler Golding, founder of Click Lift, smiling outdoors in a blue t-shirt" loading="lazy" decoding="async">
+              </picture>
+            </div>
+            <span class="founder-sat founder-sat--a" aria-hidden="true"></span>
+            <span class="founder-sat founder-sat--b" aria-hidden="true"></span>
+            <!-- Mission patch: the text ring turns slowly -->
+            <svg class="founder-patch" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+              <defs><path id="patch-ring" d="M60 60m-43 0a43 43 0 1 1 86 0a43 43 0 1 1-86 0"/></defs>
+              <circle cx="60" cy="60" r="58" fill="#170734" stroke="#f7b955" stroke-width="2"/>
+              <circle cx="60" cy="60" r="53" fill="none" stroke="#ccb5ed" stroke-opacity=".55" stroke-dasharray="2 3"/>
+              <circle cx="60" cy="60" r="31" fill="url(#g-core)" stroke="#dcc4ff" stroke-opacity=".45"/>
+              <g class="patch-spin"><text class="patch-text"><textPath href="#patch-ring" textLength="268" lengthAdjust="spacing">WHATEVER YOU FREAKING NEED &#183; CLICK LIFT &#183; </textPath></text></g>
+              <use href="#rk" transform="translate(60 61) rotate(45) scale(.42)" fill="#fff"/>
+            </svg>
           </div>
-          <figcaption class="orbit-caption">Always in your orbit</figcaption>
+          <figcaption class="founder-caption">The guy you'll actually talk to</figcaption>
         </figure>
 
         <div class="about-copy reveal" style="--delay: .1s">
-          <p class="eyebrow">03 / About</p>
+          <p class="eyebrow">04 / About</p>
           <h2 id="about-title">Small by design.</h2>
           <p class="lead">Hi, I'm Tyler Golding, the founder of Click Lift. I started this company because I believe great marketing comes from real connection.</p>
           <p>When you work with us, you're working directly with me and my team: the people who actually create your strategy, design your campaigns and care about your results. There's no middle layer and no passing you around. Just a small group of people who want to help your business grow.</p>
@@ -312,7 +491,7 @@
     <section class="section faq" id="faq" aria-labelledby="faq-title">
       <div class="container faq-grid">
         <header class="faq-head reveal">
-          <p class="eyebrow">04 / FAQ</p>
+          <p class="eyebrow">05 / FAQ</p>
           <h2 id="faq-title">Good questions.</h2>
           <p class="section-intro">Straight answers to what people ask us most. Don't see yours? <a href="#contact">Just ask.</a></p>
         </header>
@@ -350,7 +529,7 @@
     <section class="section contact" id="contact" aria-labelledby="contact-title">
       <div class="container contact-grid">
         <div class="contact-copy reveal">
-          <p class="eyebrow">05 / Free consultation</p>
+          <p class="eyebrow">06 / Free consultation</p>
           <h2 id="contact-title">Ready for liftoff?</h2>
           <p class="contact-intro">Tell us what you need. Seriously, whatever you freaking need. We'll get back to you to set up your free consultation.</p>
           <ul class="checklist">
@@ -442,6 +621,7 @@
       <nav class="footer-nav" aria-label="Footer">
         <ul>
           <li><a href="#services">Services</a></li>
+          <li><a href="#clients">Clients</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="#contact">Contact</a></li>
