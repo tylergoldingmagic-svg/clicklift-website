@@ -1,6 +1,6 @@
 /* Click Lift site script: header, mobile menu, starfield, typed service line,
-   scroll reveals, stat counters, service animations, the clients rocket, the About badge tilt
-   and the contact form.
+   scroll reveals, stat counters, the "Why Click Lift" drop, service animations, the clients rocket,
+   the About badge tilt and the contact form.
    No dependencies. */
 (() => {
   'use strict';
@@ -217,11 +217,11 @@
     const words = (el.dataset.words || '').split('|').map((word) => word.trim()).filter(Boolean);
     if (!output || !words.length) return;
 
-    const TYPE_MIN = 45; // ms per letter, randomised so it types like a person
-    const TYPE_MAX = 120;
-    const DELETE = 32; // ms per letter when backspacing
-    const HOLD = 1900; // how long a finished service stays up
-    const GAP = 420; // empty pause before the next one
+    const TYPE_MIN = 35; // ms per letter, randomised so it types like a person
+    const TYPE_MAX = 90;
+    const DELETE = 24; // ms per letter when backspacing
+    const HOLD = 1700; // how long a finished service stays up
+    const GAP = 340; // empty pause before the next one
     const STILL = 2800; // reduced motion: whole services swap in, no typing
 
     let word = 0;
@@ -355,6 +355,195 @@
     });
   }
 
+  /* ---------- Why Click Lift: the logo rocket drops off the X's and checkmarks, Battlestar style ----------
+     When a card's list scrolls into view, the rocket jumps in with a flash above the card, dives down the
+     list leaving an X (Big Agencies) or a checkmark (Click Lift) in each empty slot as it passes, then
+     jumps out just before the bottom. Big Agencies goes first. With reduced motion nothing is hidden. */
+  const dropZone = document.querySelector('[data-drop]');
+  if (dropZone) initDrop(dropZone);
+
+  function initDrop(zone) {
+    const fx = zone.querySelector('[data-drop-fx]');
+    const ship = zone.querySelector('[data-drop-ship]');
+    const cards = Array.from(zone.querySelectorAll('[data-drop-card]'));
+    if (!fx || !ship || !cards.length || !('IntersectionObserver' in window) || reduceMotion.matches) return;
+
+    const SETTLE = 600; // ms to wait for a card to slide into view in browsers that can't report when it's done
+    const ABOVE = 34; // px above the card's top edge where the rocket jumps in
+    const BELOW = 56; // px below the last icon where it jumps out
+    const DROP_AT = 12; // px the rocket's centre passes a slot before the icon lands (it clears the slot first)
+    const diveTime = (distance) => Math.min(1600, Math.max(950, 600 + distance * 1.2)); // ms, longer lists take longer
+
+    const queue = [];
+    let busy = false;
+    let cancelled = false;
+
+    const wait = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
+
+    // Everything is measured from the drop zone's top-left corner, where the effects layer sits.
+    const centre = (el) => {
+      const zoneRect = zone.getBoundingClientRect();
+      const rect = el.getBoundingClientRect();
+      return { x: rect.left + rect.width / 2 - zoneRect.left, y: rect.top + rect.height / 2 - zoneRect.top };
+    };
+
+    function spawn(className, x, y, html, life) {
+      const el = document.createElement('div');
+      el.className = className;
+      el.style.left = `${x.toFixed(1)}px`;
+      el.style.top = `${y.toFixed(1)}px`;
+      el.innerHTML = html;
+      fx.appendChild(el);
+      setTimeout(() => el.remove(), life);
+    }
+
+    const jumpFlash = (x, y) => spawn('drop-jump', x, y, '<span class="jump-glow"></span><span class="jump-streak"></span><span class="jump-ring"></span><span class="jump-ring"></span>', 900);
+
+    const place = (x, y) => {
+      ship.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
+    };
+
+    const warp = (state) => {
+      ship.classList.remove('is-arriving', 'is-leaving');
+      if (!state) return;
+      void ship.offsetWidth; // restart the animation
+      ship.classList.add(state);
+    };
+
+    function land(item, kind) {
+      if (item.classList.contains('is-dropped')) return;
+      item.classList.add('is-dropped');
+      if (cancelled) return;
+      const { x, y } = centre(item.querySelector('svg'));
+      if (kind === 'x') {
+        let sparks = '';
+        for (let i = 0; i < 8; i += 1) {
+          const angle = i * 45 + Math.random() * 30;
+          sparks += `<i style="--a:${angle.toFixed(0)}deg;--d:${(17 + Math.random() * 11).toFixed(0)}px"></i>`;
+        }
+        spawn('drop-hit', x, y, `<span></span>${sparks}`, 800);
+      } else {
+        spawn('drop-dock', x, y, '<span></span><i></i><i></i><i></i>', 900);
+      }
+    }
+
+    // The rocket falls from y0 to y1, gathering speed like it dropped out of the jump mid-air.
+    function dive(x, y0, y1, duration, onMove) {
+      return new Promise((resolve) => {
+        const start = performance.now();
+        let lastDot = y0;
+        const frame = (now) => {
+          if (cancelled) {
+            resolve();
+            return;
+          }
+          const t = Math.min(1, (now - start) / duration);
+          const y = y0 + (y1 - y0) * (0.55 * t + 0.45 * t * t);
+          place(x, y);
+          if (y - lastDot > 11) {
+            spawn('drop-dot', x + (Math.random() * 4 - 2), y - 22, '', 750);
+            lastDot = y;
+          }
+          onMove(y);
+          if (t < 1) requestAnimationFrame(frame);
+          else resolve();
+        };
+        requestAnimationFrame(frame);
+      });
+    }
+
+    // The rocket waits until the card has finished sliding into view (the scroll reveal).
+    async function settle(card) {
+      for (let tries = 0; tries < 30 && !card.classList.contains('is-visible'); tries += 1) await wait(100);
+      if (!card.getAnimations) {
+        await wait(SETTLE);
+        return;
+      }
+      await Promise.all(card.getAnimations().map((animation) => animation.finished.catch(() => {})));
+    }
+
+    async function run(card) {
+      const kind = card.dataset.dropCard;
+      const items = Array.from(card.querySelectorAll('.compare-list li'));
+      if (!items.length) return;
+      await settle(card);
+      if (cancelled) return;
+
+      const slots = items.map((item) => centre(item.querySelector('svg')));
+      const x = slots[0].x;
+      const cardTop = card.getBoundingClientRect().top - zone.getBoundingClientRect().top;
+      const y0 = Math.min(cardTop - ABOVE, slots[0].y - 80);
+      const y1 = slots[slots.length - 1].y + BELOW;
+
+      // Jump in
+      place(x, y0);
+      ship.hidden = false;
+      warp('is-arriving');
+      jumpFlash(x, y0);
+      await wait(170);
+
+      // Dive, dropping each icon off as the rocket clears its slot
+      let next = 0;
+      await dive(x, y0, y1, diveTime(y1 - y0), (y) => {
+        while (next < slots.length && y >= slots[next].y + DROP_AT) {
+          land(items[next], kind);
+          next += 1;
+        }
+      });
+      items.forEach((item) => land(item, kind));
+
+      // Jump out
+      if (!cancelled) {
+        jumpFlash(x, y1);
+        warp('is-leaving');
+        await wait(260);
+      }
+      ship.hidden = true;
+      warp(null);
+    }
+
+    async function drain() {
+      if (busy) return;
+      busy = true;
+      while (queue.length && !cancelled) {
+        const card = queue.shift();
+        await run(card);
+        card.classList.remove('is-armed');
+        await wait(60); // then straight on to the next card, one jump after another
+      }
+      busy = false;
+    }
+
+    // Motion switched off part way: put every icon in place and clear the sky.
+    function finish() {
+      cancelled = true;
+      observer.disconnect();
+      ship.hidden = true;
+      warp(null);
+      fx.querySelectorAll(':scope > :not([data-drop-ship])').forEach((el) => el.remove());
+      cards.forEach((card) => card.classList.remove('is-armed'));
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+        queue.push(entry.target.closest('[data-drop-card]'));
+        drain();
+      });
+    }, { threshold: 0.55 });
+
+    cards.forEach((card) => {
+      const list = card.querySelector('.compare-list');
+      if (!list) return;
+      card.classList.add('is-armed');
+      observer.observe(list);
+    });
+    if (reduceMotion.addEventListener) {
+      reduceMotion.addEventListener('change', () => { if (reduceMotion.matches) finish(); });
+    }
+  }
+
   /* ---------- Service animations: only run while they're on screen ---------- */
   const scenes = document.querySelectorAll('[data-scene]');
   if ('IntersectionObserver' in window && scenes.length) {
@@ -362,34 +551,6 @@
       entries.forEach((entry) => entry.target.classList.toggle('is-paused', !entry.isIntersecting));
     }, { rootMargin: '60px 0px' });
     scenes.forEach((scene) => sceneObserver.observe(scene));
-  }
-
-  /* ---------- "Whatever you freaking need" card: a new banner every pass ---------- */
-  const tow = document.querySelector('[data-tow]');
-  if (tow) initTow(tow);
-
-  function initTow(el) {
-    const banner = el.querySelector('[data-tow-text]');
-    const lines = (el.dataset.banners || '').split('|').map((line) => line.trim()).filter(Boolean);
-    if (!banner || !lines.length) return;
-    let current = 0;
-    const show = () => {
-      // Reduced motion: the banner holds still, so it shows the slogan (the last line).
-      if (reduceMotion.matches) current = lines.length - 1;
-      banner.textContent = lines[current];
-    };
-    el.addEventListener('animationiteration', (event) => {
-      if (event.target !== el) return; // ignore the bob and flutter animations inside
-      current = (current + 1) % lines.length;
-      show();
-    });
-    if (reduceMotion.addEventListener) {
-      reduceMotion.addEventListener('change', () => {
-        current = 0;
-        show();
-      });
-    }
-    show();
   }
 
   /* ---------- Clients: the rocket makes the rounds ---------- */

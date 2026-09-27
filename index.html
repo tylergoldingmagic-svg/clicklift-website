@@ -192,8 +192,10 @@
           <p class="section-intro">You have a business to run. You don't need another meeting about meetings, a 47-slide strategy deck nobody reads, or twelve vendors pointing fingers at each other. You need good ideas, people who can execute them, and work that actually moves.</p>
         </header>
 
-        <div class="compare">
-          <article class="card compare-card compare-card--old reveal">
+        <!-- The logo rocket drops off every X and checkmark, Battlestar style: it jumps in with a flash above each card,
+             dives down the list leaving an icon in each slot, and jumps out at the bottom (js/main.js, "Why Click Lift"). -->
+        <div class="compare" data-drop>
+          <article class="card compare-card compare-card--old reveal" data-drop-card="x">
             <h3>Big Agencies</h3>
             <ul class="compare-list">
               <li><svg aria-hidden="true" focusable="false"><use href="#i-x"/></svg>Chasing updates through layers of account managers</li>
@@ -204,7 +206,7 @@
             </ul>
           </article>
 
-          <article class="card compare-card compare-card--new reveal" style="--delay: .1s">
+          <article class="card compare-card compare-card--new reveal" style="--delay: .1s" data-drop-card="check">
             <h3>Click Lift</h3>
             <ul class="compare-list">
               <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Direct access to the people actually doing the work</li>
@@ -214,12 +216,22 @@
               <li><svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Flexible support &mdash; Stay because it works, not because you're locked in.</li>
             </ul>
           </article>
+
+          <!-- Effects layer: the rocket (nose down, engines on top) plus the jump flashes and landing sparks js/main.js adds -->
+          <div class="drop-fx" aria-hidden="true" data-drop-fx>
+            <div class="drop-ship" hidden data-drop-ship>
+              <div class="drop-ship-warp">
+                <svg viewBox="-40 -90 80 160" focusable="false"><circle r="30" fill="url(#g-glow)"/><g transform="rotate(180)"><g class="ds-boost"><g transform="translate(0 20)"><g class="flick"><use href="#rk-boost" transform="translate(0 -20)"/></g></g></g><g transform="translate(0 21.16)"><g class="flick-sm"><use href="#rk-flame" transform="translate(0 -21.16)" fill="#ffd58a"/></g></g><use href="#rk" fill="#fff"/></g></svg>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Services: four stages (Launch, Lift, Accelerate, Orbit) plus the catch-all.
-         Each card opens with a little animation starring the Click Lift rocket (styles in css/styles.css, "Service animations").
+         The four stage cards open with a little animation starring the Click Lift rocket (styles in css/styles.css, "Service animations").
+         The fifth card, "Whatever you freaking need", is words only: no animation.
          Each button ticks the matching "What do you need?" option in the form (data-need = the option's value). -->
     <section class="section services" id="services" aria-labelledby="services-title">
       <div class="container">
@@ -357,27 +369,6 @@
           </article>
 
           <article class="card service service-feature reveal" id="whatever">
-            <div class="scene scene--whatever" data-scene aria-hidden="true">
-              <svg class="scene-bg" viewBox="0 0 480 270" preserveAspectRatio="xMidYMax slice" focusable="false">
-                <g class="scene-stars"><circle cx="48.3" cy="199.0" r="0.7" fill="#fff" opacity="0.95"/><circle cx="147.3" cy="77.4" r="1.4" fill="#ffe2b0" opacity="0.9"/><circle class="tw" cx="241.6" cy="70.6" r="0.9" fill="#ffe2b0" opacity="0.94" style="animation-delay:-3.0s"/><circle class="tw" cx="453.8" cy="110.1" r="0.6" fill="#fff" opacity="0.69" style="animation-delay:-3.1s"/><circle cx="240.9" cy="157.6" r="0.7" fill="#fff" opacity="0.49"/><circle cx="394.2" cy="27.7" r="0.9" fill="#fff" opacity="0.54"/><circle class="tw" cx="88.0" cy="39.3" r="0.8" fill="#e2d2ff" opacity="0.68" style="animation-delay:-1.5s"/><circle class="tw" cx="393.2" cy="151.8" r="0.9" fill="#ffe2b0" opacity="0.7" style="animation-delay:-0.7s"/><circle class="tw" cx="422.9" cy="57.6" r="1.4" fill="#fff" opacity="0.77" style="animation-delay:-3.5s"/><circle class="tw" cx="286.7" cy="166.4" r="0.9" fill="#e2d2ff" opacity="0.64" style="animation-delay:-2.6s"/><circle cx="204.0" cy="125.8" r="1.4" fill="#fff" opacity="0.52"/><circle class="tw" cx="172.3" cy="91.0" r="1.4" fill="#ffe2b0" opacity="0.56" style="animation-delay:-2.6s"/><circle cx="318.5" cy="105.2" r="0.9" fill="#e2d2ff" opacity="0.67"/><circle cx="103.6" cy="196.7" r="0.7" fill="#fff" opacity="0.46"/><circle class="tw" cx="10.8" cy="206.0" r="1.1" fill="#e2d2ff" opacity="0.41" style="animation-delay:-2.1s"/><circle cx="306.7" cy="89.7" r="0.6" fill="#fff" opacity="0.6"/><circle cx="109.5" cy="170.0" r="0.9" fill="#fff" opacity="0.72"/><circle cx="211.2" cy="24.9" r="0.8" fill="#e2d2ff" opacity="0.61"/><circle class="tw" cx="41.7" cy="176.1" r="0.7" fill="#fff" opacity="0.61" style="animation-delay:-1.9s"/><circle cx="340.0" cy="156.7" r="1.4" fill="#ffe2b0" opacity="0.57"/><circle class="tw" cx="203.4" cy="155.2" r="1.4" fill="#e2d2ff" opacity="0.36" style="animation-delay:-2.6s"/><circle class="tw" cx="324.5" cy="8.8" r="0.9" fill="#ffe2b0" opacity="0.65" style="animation-delay:-3.4s"/><circle class="tw" cx="333.7" cy="115.5" r="1.4" fill="#ffe2b0" opacity="0.95" style="animation-delay:-1.2s"/><circle class="tw" cx="155.0" cy="30.7" r="1.1" fill="#e2d2ff" opacity="0.41" style="animation-delay:-0.7s"/><circle cx="434.1" cy="181.8" r="0.6" fill="#ffe2b0" opacity="0.64"/><circle cx="43.2" cy="143.3" r="0.6" fill="#fff" opacity="0.83"/><circle cx="59.4" cy="18.7" r="1.1" fill="#e2d2ff" opacity="0.71"/><circle class="tw" cx="147.8" cy="171.9" r="0.8" fill="#e2d2ff" opacity="0.48" style="animation-delay:-3.9s"/><circle cx="20.2" cy="32.9" r="0.8" fill="#e2d2ff" opacity="0.78"/><circle cx="320.7" cy="133.0" r="1.1" fill="#fff" opacity="0.83"/></g>
-                <circle cx="240" cy="1130" r="900" fill="url(#g-planet)"/><circle cx="240" cy="1130" r="901" fill="none" stroke="#b58cff" stroke-opacity=".3" stroke-width="6"/><circle cx="240" cy="1130" r="900" fill="none" stroke="#e6d6ff" stroke-opacity=".85"/>
-                <g fill="#ffd58a"><circle cx="297.0" cy="244.5" r="0.6" opacity="0.91"/><circle cx="123.6" cy="241.2" r="0.7" opacity="0.51"/><circle class="tw" cx="122.4" cy="247.8" r="0.7" opacity="0.46" style="animation-delay:-2.9s"/><circle class="tw" cx="433.2" cy="263.9" r="0.7" opacity="0.87" style="animation-delay:-1.5s"/><circle class="tw" cx="214.4" cy="235.1" r="0.6" opacity="0.57" style="animation-delay:-0.1s"/><circle cx="412.8" cy="253.5" r="0.7" opacity="0.75"/><circle cx="103.0" cy="255.7" r="0.7" opacity="0.98"/><circle class="tw" cx="146.6" cy="242.6" r="0.7" opacity="0.96" style="animation-delay:-2.7s"/><circle cx="387.3" cy="252.8" r="0.8" opacity="0.49"/><circle cx="150.0" cy="246.6" r="0.7" opacity="0.71"/><circle cx="34.4" cy="269.5" r="0.6" opacity="0.97"/><circle cx="195.6" cy="241.2" r="1.0" opacity="0.65"/><circle cx="12.2" cy="262.9" r="0.7" opacity="0.79"/><circle cx="63.2" cy="253.7" r="1.0" opacity="0.64"/><circle cx="251.5" cy="243.2" r="0.6" opacity="0.77"/><circle class="tw" cx="178.4" cy="239.0" r="1.0" opacity="0.97" style="animation-delay:-2.6s"/><circle cx="291.4" cy="246.4" r="0.8" opacity="0.6"/><circle class="tw" cx="50.7" cy="262.0" r="0.8" opacity="0.55" style="animation-delay:-3.4s"/><circle class="tw" cx="327.8" cy="250.2" r="0.7" opacity="0.85" style="animation-delay:-1.6s"/><circle cx="436.6" cy="255.1" r="0.8" opacity="0.9"/><circle cx="203.7" cy="234.5" r="0.6" opacity="0.89"/><circle cx="104.1" cy="256.1" r="0.7" opacity="0.8"/><circle cx="57.5" cy="257.4" r="0.7" opacity="0.48"/><circle cx="73.5" cy="260.5" r="0.7" opacity="0.99"/><circle cx="234.5" cy="242.5" r="1.0" opacity="0.6"/><circle cx="426.5" cy="254.0" r="0.7" opacity="0.79"/><circle cx="165.1" cy="237.3" r="0.8" opacity="0.73"/><circle cx="241.3" cy="233.8" r="0.8" opacity="0.83"/><circle class="tw" cx="360.5" cy="245.8" r="0.8" opacity="0.91" style="animation-delay:-0.1s"/><circle cx="340.2" cy="251.0" r="0.8" opacity="0.81"/><circle class="tw" cx="13.4" cy="269.1" r="0.8" opacity="0.63" style="animation-delay:-2.8s"/><circle cx="240.2" cy="241.8" r="0.8" opacity="0.64"/><circle class="tw" cx="350.4" cy="250.6" r="0.8" opacity="0.96" style="animation-delay:-0.5s"/><circle cx="216.7" cy="238.0" r="0.8" opacity="0.73"/><circle class="tw" cx="85.1" cy="257.3" r="1.0" opacity="0.61" style="animation-delay:-1.3s"/><circle cx="201.3" cy="241.8" r="1.0" opacity="0.62"/></g>
-                <g class="wh-junk-all" fill="none" stroke="#ccb5ed" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-                  <g transform="translate(150 196) rotate(-12)"><g class="wh-junk" style="animation-duration:9s"><rect x="-11" y="-8" width="22" height="15" rx="2"/><path d="M-6 3V0M-1 3V-3M4 3V-1M0 7v4M-4 11h8"/></g></g>
-                  <g transform="translate(330 58) rotate(10)"><g class="wh-junk" style="animation-duration:11s;animation-delay:-3s"><rect x="-13" y="-9" width="26" height="12" rx="1.5"/><path d="M-7 3v9M7 3v9"/></g></g>
-                  <g transform="translate(362 176) rotate(18)"><g class="wh-junk" style="animation-duration:8s;animation-delay:-5s"><path d="M-8 8-6 1 3-8 7-4-2 5Z"/><path d="M1-6 5-2"/></g></g>
-                  <g transform="translate(206 44)"><g class="wh-junk" style="animation-duration:10s;animation-delay:-1.5s"><path d="M-4-6-9 0-4 6M4-6 9 0 4 6M1.5-8-1.5 8"/></g></g>
-                </g>
-              </svg>
-              <div class="tow" data-tow data-banners="Deck due tomorrow?|Billboard by Friday?|Need words written?|Tech meltdown?|Mess to clean up?|Whatever you freaking need.">
-                <div class="tow-bob">
-                  <span class="tow-banner" data-tow-text>Whatever you freaking need.</span>
-                  <span class="tow-rope"></span>
-                  <svg class="tow-rocket" viewBox="-86 -32 148 64" focusable="false"><circle cx="8" r="30" fill="url(#g-glow)"/><g transform="rotate(90)"><g transform="scale(1)"><g class="tow-boost"><g transform="translate(0 20)"><g class="flick"><use href="#rk-boost" transform="translate(0 -20)"/></g></g></g><g transform="translate(0 21.16)"><g class="flick-sm"><use href="#rk-flame" transform="translate(0 -21.16)" fill="#ffd58a"/></g></g><use href="#rk" fill="#fff"/></g></g></svg>
-                </div>
-              </div>
-              <span class="scene-num">05</span>
-            </div>
             <h3>Whatever you freaking need.</h3>
             <p>Sometimes you just need something done, and done right. The presentation due tomorrow, the billboard someone forgot about, copywriting, tech, or fixing a mess someone else left behind. We'll lift it off your plate and make it happen.</p>
             <ul class="tags" aria-label="Whatever you freaking need includes">
